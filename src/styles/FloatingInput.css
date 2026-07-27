@@ -1,0 +1,45 @@
+.floating-input {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem;
+    background: var(--secondary);
+    border: 0.1rem solid var(--primary-accent-3);
+    border-radius: 0.5rem;
+    width: 20rem;
+}
+
+.floating-input input {
+    flex: 1;
+    width: 100%;
+    border: none;
+    background: transparent;
+    padding: 0.8rem 0.5rem 0;
+    outline: none;
+    font-size: 1rem;
+    color: var(--text);
+}
+
+.floating-input label {
+    position: absolute;
+    left: 1rem;
+    pointer-events: none;
+    color: var(--primary-accent-4);
+    transition: transform 0.2s ease, font-size 0.2s ease, color 0.2s ease;
+}
+
+.floating-input input:focus+label,
+.floating-input.filled label {
+    transform: translateY(-0.6rem);
+    font-size: 0.75rem;
+    color: var(--primary-accent-1);
+}
+
+.floating-input button {
+    border: none;
+    background: transparent;
+    color: var(--primary-accent-1);
+    cursor: pointer;
+    font-size: 1.2rem;
+}

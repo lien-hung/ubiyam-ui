@@ -1,0 +1,20 @@
+.announce-bar {
+    padding: 0.5rem 0;
+    background: var(--primary-gradient);
+    color: var(--text-light);
+}
+
+.announce-bar-slide {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    i {
+        font-size: 1.3rem;
+    }
+
+    span {
+        margin-left: 0.5rem;
+        text-transform: uppercase;
+    }
+}
