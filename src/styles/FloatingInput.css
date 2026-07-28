@@ -4,7 +4,7 @@
     align-items: center;
     gap: 0.5rem;
     padding: 0.5rem;
-    background: var(--secondary);
+    background: transparent;
     border: 0.1rem solid var(--primary-accent-3);
     border-radius: 0.5rem;
     width: 20rem;

@@ -4,6 +4,10 @@
     color: var(--text-light);
 }
 
+.announce-bar *::selection {
+    background-color: var(--light-gray);
+}
+
 .announce-bar-slide {
     display: flex;
     justify-content: center;

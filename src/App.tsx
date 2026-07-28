@@ -1,4 +1,10 @@
-import { AnnounceBar, Footer, Header, Newsletter } from "./components";
+import {
+  AnnounceBar,
+  Footer,
+  FreeEbookButton,
+  Header,
+  Newsletter
+} from "./components";
 
 import "./App.css";
 
@@ -10,6 +16,7 @@ function App() {
       {/* MAIN PAGE CONTENT HERE */}
       <Newsletter />
       <Footer />
+      <FreeEbookButton />
     </>
   );
 }

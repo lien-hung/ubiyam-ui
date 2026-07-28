@@ -97,10 +97,10 @@ export function Header() {
             </li>
           </ul>
 
-          <div className="drawer-footer">
+          <a href="/" className="drawer-footer">
             <i className="bi bi-person"></i>
             <span>Log in</span>
-          </div>
+          </a>
         </div>
       </nav>
     </>

@@ -1,6 +1,10 @@
 footer {
     background: var(--primary-gradient);
-    padding: 1rem 0;
+    padding: 1rem 0 1.5rem 0;
+}
+
+footer *::selection {
+    background-color: var(--light-gray);
 }
 
 .footer-main {
@@ -28,6 +32,7 @@ footer {
 
     p {
         line-height: 1.5;
+        margin-bottom: 1rem;
     }
 
     ul {
@@ -42,7 +47,7 @@ footer {
     ul li a {
         color: var(--text-light);
         text-decoration: none;
-        font-size: 0.9rem;
+        font-size: 0.85rem;
 
         &:hover {
             text-decoration: underline;
@@ -73,6 +78,11 @@ footer {
 
         span {
             margin-left: 0.5rem;
+            letter-spacing: normal;
+        }
+
+        &:hover {
+            cursor: pointer;
         }
     }
 
@@ -90,7 +100,7 @@ footer {
 
 .footer-bottom {
     color: var(--text-light);
-    font-size: 0.75rem;
+    font-size: 0.7rem;
     border-top: 0.1rem solid var(--border);
     padding-top: 2rem;
 

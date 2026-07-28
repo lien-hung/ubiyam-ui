@@ -4,7 +4,9 @@
   --bg: #ffffff;
   --border: #ffffff14;
   --border-text: #2a13381a;
+  --highlight-text: #2a133833;
   --gray: #2a13380a;
+  --light-gray: #ffffff33;
   --primary-accent-1: #6c3eb8;
   --primary-accent-2: #b57edc;
   --primary-accent-3: #8c7ab8;
@@ -13,15 +15,24 @@
   --primary-gradient: linear-gradient(270deg, #6c3eb8 15%, #b57edc 85%);
 
   color: var(--text);
+}
+
+* {
+  margin: 0;
+  letter-spacing: 0.05rem;
   font-family: Barlow, sans-serif;
 }
 
-body {
-  margin: 0;
-  width: 100%;
+*::selection {
+  background-color: var(--highlight-text);
+}
+
+body.no-scroll {
+  overflow: hidden;
 }
 
 h1, h2, h3, h4, h5, h6 {
   margin: 0;
   font-weight: normal;
+  font-family: 'Barlow Condensed', sans-serif;
 }

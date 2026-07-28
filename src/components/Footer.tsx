@@ -48,10 +48,10 @@ export function Footer() {
             </div>
           </div>
         </div>
-        <div className="footer-disclaimer">
+        <h5 className="footer-disclaimer">
           *These statements have not been evaluated by the Food and Drug Administration.
           This product is not intended to diagnose, treat, cure, or prevent any disease.
-        </div>
+        </h5>
         <div className="footer-social">
           <button className="follow-button">
             <i className="bi bi-heart"></i>
