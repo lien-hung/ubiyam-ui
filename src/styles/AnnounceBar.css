@@ -1,5 +1,5 @@
 .announce-bar {
-    padding: 0.5rem 0;
+    padding: if(media(width < 768px): 0.4rem 0; else: 0.5rem 0);
     background: var(--primary-gradient);
     color: var(--text-light);
 }
@@ -14,10 +14,11 @@
     align-items: center;
 
     i {
-        font-size: 1.3rem;
+        font-size: if(media(width < 768px): 1rem; else: 1.3rem);
     }
 
     span {
+        font-size: if(media(width < 768px): 0.85rem);
         margin-left: 0.5rem;
         text-transform: uppercase;
     }

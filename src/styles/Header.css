@@ -138,3 +138,18 @@
         font-size: 1.6rem;
     }
 }
+
+@media (width < 768px) {
+    .header-bar {
+        padding: 1rem;
+
+        a img {
+            height: 1.5rem;
+            vertical-align: middle;
+        }
+
+        span i.bi-person {
+            display: none;
+        }
+    }
+}

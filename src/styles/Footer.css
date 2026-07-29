@@ -124,3 +124,46 @@ footer *::selection {
         }
     }
 }
+
+@media (width < 768px) {
+    .footer-main {
+        padding: 0;
+    }
+
+    .footer-links {
+        flex-direction: column;
+        padding: 0 1rem;
+        gap: 3rem;
+
+        img {
+            margin: 0.5rem auto;
+        }
+
+        .footer-section {
+            margin-bottom: 3rem;
+        }
+
+        .footer-right {
+            display: block;
+        }
+    }
+
+    .footer-disclaimer {
+        padding: 0 1rem;
+    }
+
+    .footer-social {
+        flex-direction: column;
+        gap: 2rem;
+
+        .social-links {
+            padding: 0;
+        }
+    }
+
+    .footer-bottom {
+        ul {
+            flex-wrap: wrap;
+        }
+    }
+}
