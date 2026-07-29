@@ -12,6 +12,11 @@
         font-size: 1.5rem;
     }
 
+    span a {
+        text-decoration: none;
+        color: var(--text);
+    }
+
     .hamburger {
         cursor: pointer;
         transition: opacity 0.25s;
@@ -42,7 +47,7 @@
     pointer-events: auto;
 }
 
-.side-drawer {
+.menu-drawer {
     position: fixed;
     display: flex;
     flex-direction: column;
@@ -55,88 +60,144 @@
     transform: translateX(-100%);
     transition: transform 0.28s cubic-bezier(0.2, 0.8, 0.2, 1);
     z-index: 50;
+
+    .drawer-header {
+        display: flex;
+        align-items: center;
+        padding: 0.9rem 0.6rem 0.9rem 1.2rem;
+        background-color: var(--secondary);
+        border-bottom: 0.1rem solid var(--border-text);
+
+        img {
+            margin-right: 0.6rem;
+        }
+    }
+
+    .drawer-close {
+        background: var(--gray);
+        border: 0;
+        border-radius: 10%;
+        padding: 0.1rem;
+        font-size: 1.6rem;
+        line-height: 1;
+        cursor: pointer;
+        display: block;
+        margin-left: auto;
+    }
+
+    .drawer-body {
+        padding: 0.8rem 1rem;
+        overflow-y: auto;
+    }
+
+    .drawer-list {
+        list-style: none;
+        padding: 0;
+        margin: 0 -1rem 1rem;
+
+        li {
+            font-family: inherit;
+            cursor: pointer;
+        }
+
+        li a {
+            color: var(--text);
+            text-decoration: none;
+            padding: 0.8rem 1.2rem;
+            display: block;
+        }
+
+        li:hover {
+            background-color: var(--gray);
+        }
+
+        .drawer-list-separator {
+            height: 1px;
+            background-color: var(--gray);
+            margin: 0 1.2rem;
+        }
+    }
+
+    .drawer-footer {
+        margin-top: 1rem;
+        display: flex;
+        gap: 0.5rem;
+        align-items: center;
+        text-decoration: none;
+        color: var(--text);
+
+        i {
+            font-size: 1.5rem;
+        }
+
+        span {
+            font-size: 0.85rem;
+        }
+
+        &:hover i {
+            font-size: 1.6rem;
+        }
+    }
 }
 
-.side-drawer.open {
+.menu-drawer.open {
     transform: translateX(0);
 }
 
-.drawer-header {
+.cart-drawer {
+    position: fixed;
     display: flex;
-    align-items: center;
-    padding: 0.9rem 0.6rem 0.9rem 1.2rem;
-    background-color: var(--secondary);
-    border-bottom: 0.1rem solid var(--border-text);
+    flex-direction: column;
+    top: 0;
+    right: 0;
+    height: 100%;
+    width: 400px;
+    max-width: 85%;
+    background: var(--bg);
+    transform: translateX(100%);
+    transition: transform 0.28s cubic-bezier(0.2, 0.8, 0.2, 1);
+    z-index: 1250;
 
-    img {
-        margin-right: 0.6rem;
-    }
-}
-
-.drawer-close {
-    background: var(--gray);
-    border: 0;
-    border-radius: 10%;
-    padding: 0.1rem;
-    font-size: 1.6rem;
-    line-height: 1;
-    cursor: pointer;
-    display: block;
-    margin-left: auto;
-}
-
-.drawer-body {
-    padding: 0.8rem 1rem;
-    overflow-y: auto;
-}
-
-.drawer-list {
-    list-style: none;
-    padding: 0;
-    margin: 0 -1rem 1rem;
-
-    li {
-        font-family: inherit;
+    .drawer-close {
+        background: var(--bg);
+        position: absolute;
+        top: 0.6rem;
+        right: 0.8rem;
+        border: 0;
+        padding: 0;
+        font-size: 1.6rem;
         cursor: pointer;
     }
 
-    li a {
-        color: var(--text);
-        text-decoration: none;
-        padding: 0.8rem 1.2rem;
-        display: block;
-    }
+    .drawer-body {
+        margin: auto;
+        text-align: center;
 
-    li:hover {
-        background-color: var(--gray);
-    }
+        h2 {
+            margin-bottom: 2rem;
+        }
 
-    .drawer-list-separator {
-        height: 1px;
-        background-color: var(--gray);
-        margin: 0 1.2rem;
+        a {
+            text-decoration: none;
+            color: var(--primary-accent-1);
+        }
+
+        .shopping-button {
+            background-color: var(--primary-accent-1);
+            color: var(--text-light);
+            font-weight: bold;
+            padding: 0.5rem 1rem;
+            border-radius: 999px;
+        }
+
+        h3 {
+            margin: 3rem 0 0.5rem 0;
+        }
     }
 }
 
-.drawer-footer {
-    margin-top: 1rem;
-    display: flex;
-    gap: 0.5rem;
-    align-items: center;
-    text-decoration: none;
-    color: var(--text);
-
-    i {
-        font-size: 1.5rem;
-    }
-
-    span {
-        font-size: 0.85rem;
-    }
-
-    &:hover i {
-        font-size: 1.6rem;
-    }
+.cart-drawer.open {
+    transform: translateX(0%);
 }
 
 @media (width < 768px) {

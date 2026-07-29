@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import UbiyamLogo from "../assets/ubiyam-logo.jpg";
 import UbiyamDrawerLogo from "../assets/ubiyam-logo-drawer.png";
@@ -6,12 +6,21 @@ import UbiyamDrawerLogo from "../assets/ubiyam-logo-drawer.png";
 import "../styles/Header.css";
 
 export function Header() {
-  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [isMenuDrawerOpen, setIsMenuDrawerOpen] = useState(false);
+  const [isCartDrawerOpen, setIsCartDrawerOpen] = useState(false);
+  const isDrawerOpen = isMenuDrawerOpen || isCartDrawerOpen;
+
+  useEffect(() => {
+    document.body.classList.toggle("no-scroll", isCartDrawerOpen);
+    return () => {
+      document.body.classList.remove("no-scroll");
+    }
+  }, [isCartDrawerOpen]);
 
   return (
     <>
       <header className="header-bar">
-        <span className="hamburger" onClick={() => setIsDrawerOpen(true)}>
+        <span className="hamburger" onClick={() => setIsMenuDrawerOpen(true)}>
           <i className="bi bi-list"></i>
         </span>
         <a href="/">
@@ -19,25 +28,30 @@ export function Header() {
         </a>
         <span className="header-account">
           <i className="bi bi-person"></i>
-          <i className="bi bi-cart"></i>
+          <a href="/cart" onClick={(e) => { e.preventDefault(); setIsCartDrawerOpen(true); }}>
+            <i className="bi bi-cart"></i>
+          </a>
         </span>
       </header>
 
       <div
         className={`drawer-overlay ${isDrawerOpen ? "open" : ""}`}
-        onClick={() => setIsDrawerOpen(false)}
+        onClick={() => {
+          if (isMenuDrawerOpen) setIsMenuDrawerOpen(false);
+          else setIsCartDrawerOpen(false);
+        }}
         aria-hidden={!isDrawerOpen}
       />
 
       <nav
-        className={`side-drawer ${isDrawerOpen ? "open" : ""}`}
+        className={`menu-drawer ${isMenuDrawerOpen ? "open" : ""}`}
         role="dialog"
         aria-label="Main menu"
       >
         <div className="drawer-header">
           <img src={UbiyamDrawerLogo} height={36} />
           <h2>UBIYAM®'s MENU</h2>
-          <button className="drawer-close" onClick={() => setIsDrawerOpen(false)}>
+          <button className="drawer-close" onClick={() => setIsMenuDrawerOpen(false)}>
             <i className="bi bi-x"></i>
           </button>
         </div>
@@ -103,6 +117,23 @@ export function Header() {
           </a>
         </div>
       </nav>
+
+      <div
+        className={`cart-drawer ${isCartDrawerOpen ? "open" : ""}`}
+        role="dialog"
+        aria-label="Customer cart"
+      >
+        <button className="drawer-close" onClick={() => setIsCartDrawerOpen(false)}>
+          <i className="bi bi-x"></i>
+        </button>
+
+        <div className="drawer-body">
+          <h2>Your cart is empty</h2>
+          <a href="/products/ube-powder-purple-yam" className="shopping-button">Continue shopping</a>
+          <h3>Have an account?</h3>
+          <p><a>Log in</a> to check out faster.</p>
+        </div>
+      </div>
     </>
   );
 }

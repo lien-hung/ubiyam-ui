@@ -1,0 +1,16 @@
+.scroll-to-top {
+    display: none;
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    z-index: 1200;
+    width: 40px;
+    height: 40px;
+    background: var(--primary-accent-1);
+    color: var(--text-light);
+    border: 0;
+    border-radius: 999px;
+    box-shadow: 0.1rem 0.1rem 1rem rgb(79 18 149 / 0.24);
+    font-size: 1.5rem;
+    cursor: pointer;
+}

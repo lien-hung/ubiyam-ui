@@ -3,7 +3,8 @@ import {
   Footer,
   FreeEbookButton,
   Header,
-  Newsletter
+  Newsletter,
+  ScrollTopButton
 } from "./components";
 
 import "./App.css";
@@ -17,6 +18,7 @@ function App() {
       <Newsletter />
       <Footer />
       <FreeEbookButton />
+      <ScrollTopButton />
     </>
   );
 }
