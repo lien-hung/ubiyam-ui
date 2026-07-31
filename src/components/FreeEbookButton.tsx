@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { FloatingInput } from "./FloatingInput";
 
-import UbiyamEbook from "../assets/ubiyam-ebook.png";
+import ubiyamEbook from "../assets/ubiyam-ebook.png";
 import "../styles/FreeEbookButton.css";
 
 export function FreeEbookButton() {
@@ -49,7 +49,7 @@ export function FreeEbookButton() {
           </div>
 
           <div className="free-ebook-dialog-image">
-            <img src={UbiyamEbook} />
+            <img src={ubiyamEbook} />
           </div>
         </div>
       </div>

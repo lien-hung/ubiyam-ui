@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
-import UbiyamLogo from "../assets/ubiyam-logo.jpg";
-import UbiyamDrawerLogo from "../assets/ubiyam-logo-drawer.png";
+import ubiyamLogo from "../assets/ubiyam-logo.jpg";
+import ubiyamDrawerLogo from "../assets/ubiyam-logo-drawer.png";
 
 import "../styles/Header.css";
 
@@ -24,7 +24,7 @@ export function Header() {
           <i className="bi bi-list"></i>
         </span>
         <a href="/">
-          <img src={UbiyamLogo} />
+          <img src={ubiyamLogo} />
         </a>
         <span className="header-account">
           <i className="bi bi-person"></i>
@@ -49,7 +49,7 @@ export function Header() {
         aria-label="Main menu"
       >
         <div className="drawer-header">
-          <img src={UbiyamDrawerLogo} height={36} />
+          <img src={ubiyamDrawerLogo} height={36} />
           <h2>UBIYAM®'s MENU</h2>
           <button className="drawer-close" onClick={() => setIsMenuDrawerOpen(false)}>
             <i className="bi bi-x"></i>

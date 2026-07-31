@@ -179,11 +179,11 @@
 
         a {
             text-decoration: none;
-            color: var(--primary-accent-1);
+            color: var(--primary);
         }
 
         .shopping-button {
-            background-color: var(--primary-accent-1);
+            background-color: var(--primary);
             color: var(--text-light);
             font-weight: bold;
             padding: 0.5rem 1rem;

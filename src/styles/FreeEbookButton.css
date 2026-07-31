@@ -6,7 +6,7 @@
     width: 180px;
     padding: 0.5rem 1rem;
     background: var(--bg);
-    color: var(--primary-accent-1);
+    color: var(--primary);
     border: none;
     border-top-left-radius: 1.5rem;
     border-top-right-radius: 1.5rem;
@@ -108,7 +108,7 @@
     padding: 0.9rem 1.6rem;
     border: none;
     border-radius: 999px;
-    background: var(--primary-accent-1);
+    background: var(--primary);
     color: var(--text-light);
     cursor: pointer;
     font-weight: bold;

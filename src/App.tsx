@@ -1,26 +1,8 @@
-import {
-  AnnounceBar,
-  Footer,
-  FreeEbookButton,
-  Header,
-  Newsletter,
-  ScrollTopButton
-} from "./components";
-
 import "./App.css";
+import { HomePage } from "./pages/HomePage";
 
 function App() {
-  return (
-    <>
-      <AnnounceBar />
-      <Header />
-      {/* MAIN PAGE CONTENT HERE */}
-      <Newsletter />
-      <Footer />
-      <FreeEbookButton />
-      <ScrollTopButton />
-    </>
-  );
+  return <HomePage />;
 }
 
 export default App;
