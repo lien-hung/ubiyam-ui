@@ -11,7 +11,7 @@ import { HomePageBanner } from "../components/HomePageBanner";
 import { Marquee } from "../components/Marquee";
 import { discoverItems, faqItems, mascotSection, organicItems, ritualItems, testimonialItems } from "../constants";
 import "../styles/HomePage.css";
-import { FAQAccordion } from "../components/FAQAccordion";
+import { Accordion } from "../components/Accordion";
 
 export function HomePage() {
   return (
@@ -218,7 +218,11 @@ export function HomePage() {
         </div>
       </section>
 
-      <FAQAccordion items={faqItems} />
+      <section className="faq-section">
+        <h2>FAQ</h2>
+        <p>Questions? We got you covered!</p>
+        <Accordion items={faqItems} />
+      </section>
 
       <section className="tracked-sealed-section">
         <div className="text tracked-sealed-item">

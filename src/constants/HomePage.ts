@@ -109,44 +109,44 @@ export const ritualItems = [
 
 export const faqItems = [
   {
-    question: "Is UBIYAM® really 100% natural?",
-    answer: "Yes. UBIYAM contains only one ingredient: pure purple yam (ube) powder. No fillers. No added sugar. No preservatives. No artificial flavoring. That's it.",
+    summary: "Is UBIYAM® really 100% natural?",
+    details: "Yes. UBIYAM contains only one ingredient: pure purple yam (ube) powder. No fillers. No added sugar. No preservatives. No artificial flavoring. That's it.",
   },
   {
-    question: "Where does your ube come from?",
-    answer: "Our purple yam is grown and harvested on farms in the Philippines the native home of authentic ube. It is then gently dried, milled and packed in a GMP-certified facility, and every batch is lab tested for purity, color and nutrient density before it ships.",
+    summary: "Where does your ube come from?",
+    details: "Our purple yam is grown and harvested on farms in the Philippines the native home of authentic ube. It is then gently dried, milled and packed in a GMP-certified facility, and every batch is lab tested for purity, color and nutrient density before it ships.",
   },
   {
-    question: "How long does one bag last?",
-    answer: "Each pouch contains enough powder for approximately 20 - 30 servings, depending on how you use it. Most customers use 1 - 2 teaspoons per drink or recipe.",
+    summary: "How long does one bag last?",
+    details: "Each pouch contains enough powder for approximately 20 - 30 servings, depending on how you use it. Most customers use 1 - 2 teaspoons per drink or recipe.",
   },
   {
-    question: "What does it taste like?",
-    answer: "Ube has a naturally mild, slightly sweet, nutty flavor with subtle vanilla notes. It blends beautifully into lattes, smoothies, oatmeal, desserts, and baking recipes.",
+    summary: "What does it taste like?",
+    details: "Ube has a naturally mild, slightly sweet, nutty flavor with subtle vanilla notes. It blends beautifully into lattes, smoothies, oatmeal, desserts, and baking recipes.",
   },
   {
-    question: "Does it contain added sugar?",
-    answer: "No. UBIYAM contains zero added sugar.The subtle sweetness comes naturally from the yam itself.",
+    summary: "Does it contain added sugar?",
+    details: "No. UBIYAM contains zero added sugar.The subtle sweetness comes naturally from the yam itself.",
   },
   {
-    question: "How fast is shipping, and how do I track my order?",
-    answer: `
+    summary: "How fast is shipping, and how do I track my order?",
+    details: `
       Every order ships with full tracking. Orders are processed within 1-3 business days, and once shipped, delivery typically takes 5 - 9 business days.
       We currently ship to the United States, the United Kingdom, Australia, Canada, Belgium, France, Germany, the Netherlands, Spain, Switzerland, the United Arab Emirates, Qatar, Saudi Arabia, Kuwait, Oman and Bahrain.
       You'll receive your tracking link by email as soon as your order is on the way, and you can also follow your parcel anytime via the Track Your Order page.
     `,
   },
   {
-    question: "Does it dissolve easily? Do I need to cook it?",
-    answer: "No cooking needed. Whisk a teaspoon with a splash of hot (not boiling) water into a smooth purple paste, then add your milk of choice. A small whisk works — our Electric Ube Frother makes it effortless and lump-free in seconds.",
+    summary: "Does it dissolve easily? Do I need to cook it?",
+    details: "No cooking needed. Whisk a teaspoon with a splash of hot (not boiling) water into a smooth purple paste, then add your milk of choice. A small whisk works — our Electric Ube Frother makes it effortless and lump-free in seconds.",
   },
   {
-    question: "I watch my blood sugar — is UBIYAM right for me?",
-    answer: "UBIYAM contains zero added sugar — its gentle sweetness and energy come from the yam's naturally occurring complex carbohydrates. If you manage a medical condition such as diabetes, please check with your doctor about how it fits your plan.",
+    summary: "I watch my blood sugar — is UBIYAM right for me?",
+    details: "UBIYAM contains zero added sugar — its gentle sweetness and energy come from the yam's naturally occurring complex carbohydrates. If you manage a medical condition such as diabetes, please check with your doctor about how it fits your plan.",
   },
   {
-    question: "What is your guarantee?",
-    answer: `
+    summary: "What is your guarantee?",
+    details: `
       Every order is covered by our 60-Day Satisfaction Guarantee. If you're not happy for any reason, email us at info@ubiyam.com within 60 days of delivery with your order number, and we'll send you a free prepaid return label and refund you in full. No questions, no fees.
       Refunds are issued to your original payment method within 5-10 business days of approval.
       Customers in the UK and EU also have a 14-day right to cancel with a full refund, including standard delivery.
@@ -154,11 +154,11 @@ export const faqItems = [
     `,
   },
   {
-    question: "Which certifications does UBIYAM hold?",
-    answer: "UBIYAM® is USDA Organic, EU Organic, Halal Certified, Non-GMO and naturally gluten-free — with every batch lab tested for purity.",
+    summary: "Which certifications does UBIYAM hold?",
+    details: "UBIYAM® is USDA Organic, EU Organic, Halal Certified, Non-GMO and naturally gluten-free — with every batch lab tested for purity.",
   },
   {
-    question: "Why is it called UBIYAM?",
-    answer: "UBI + YAM. \"Ubi\" is how ube is spelled across much of Southeast Asia, and ube is a purple yam — so we simply put the two together. One name, one ingredient.",
+    summary: "Why is it called UBIYAM?",
+    details: "UBI + YAM. \"Ubi\" is how ube is spelled across much of Southeast Asia, and ube is a purple yam — so we simply put the two together. One name, one ingredient.",
   },
 ];
