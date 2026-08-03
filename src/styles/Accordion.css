@@ -1,7 +1,3 @@
-.accordion {
-    display: grid;
-}
-
 details {
     border: 1px solid rgb(255 255 255 / 0.15);
     border-left: none;
@@ -57,4 +53,29 @@ summary {
 
 summary:hover {
     background: rgb(255 255 255 / 0.08);
+}
+
+.accordion {
+    display: grid;
+    margin-top: 1rem;
+}
+
+.accordion details {
+    border-color: #a16ac04d;
+    border-width: 1px;
+}
+
+.accordion details:not(:first-child) {
+    border-top: none;
+}
+
+.accordion details p {
+    padding-top: 0;
+    padding-left: 0.5rem;
+    font-size: 1rem;
+}
+
+.accordion summary {
+    color: var(--text);
+    font-size: 13px;
 }

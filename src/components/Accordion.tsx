@@ -12,17 +12,15 @@ type AccordionProps = {
 export function Accordion({ items }: AccordionProps) {
   return (
     <div className="accordion">
-      {items.map((item) => {
-        return (
-          <details key={item.summary}>
-            <summary>
-              <h3>{item.summary}</h3>
-              <i className="bi bi-plus-lg" />
-            </summary>
-            <p>{item.details}</p>
-          </details>
-        );
-      })}
+      {items.map((item) => (
+        <details key={item.summary}>
+          <summary>
+            <h3>{item.summary}</h3>
+            <i className="bi bi-plus-lg" />
+          </summary>
+          <p>{item.details}</p>
+        </details>
+      ))}
     </div>
   );
 }

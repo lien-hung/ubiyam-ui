@@ -1,0 +1,16 @@
+.tracked-sealed-section {
+    flex-direction: if(media(width < 768px): column);
+    gap: if(media(width < 768px): 2rem; else: 4rem);
+}
+
+.tracked-sealed-item {
+    i {
+        color: var(--primary);
+        font-size: 1.3rem;
+    }
+
+    p {
+        font-size: 0.85rem;
+        line-height: 1.5;
+    }
+}

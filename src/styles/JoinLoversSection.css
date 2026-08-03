@@ -1,0 +1,33 @@
+.join-lovers-section {
+    align-items: center;
+    background-color: var(--secondary);
+
+    h2 {
+        margin-bottom: 2rem;
+        font-size: 36px;
+    }
+
+    .squiggle {
+        height: 25%;
+    }
+
+    .rating {
+        gap: 6px;
+        font-size: 1.2rem;
+    }
+
+    .rating-text {
+        color: var(--text);
+    }
+
+    .slide .text p {
+        font-size: 0.85rem;
+        line-height: 1.5;
+        margin-bottom: 1rem;
+    }
+
+    .testimonial-name i {
+        color: var(--primary);
+        margin-right: 0.3rem;
+    }
+}

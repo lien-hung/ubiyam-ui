@@ -1,0 +1,84 @@
+.join-ritual-section {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas:
+        "center center"
+        "left right";
+    background: linear-gradient(54deg, #f4d8f6 0%, #ffffff 100%);
+    gap: 2rem;
+    padding: 4rem;
+
+    img {
+        border-radius: 1rem;
+        object-fit: cover;
+        transition: transform 0.45s, box-shadow 0.45s;
+    }
+
+    a:hover img {
+        transform: scale(1.06);
+        box-shadow: 0 16px 32px rgb(79 18 149 / 0.24);
+    }
+
+    .ritual-left {
+        grid-area: left;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1rem;
+    }
+
+    .ritual-center {
+        grid-area: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    .ritual-center h2 {
+        font-size: 36px;
+        margin-bottom: 4px;
+    }
+
+    .ritual-center p {
+        font-size: 0.7rem;
+    }
+
+    .ritual-right {
+        grid-area: right;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1rem;
+    }
+
+    .ritual-links {
+        margin: auto;
+        display: flex;
+        gap: 0.8rem;
+    }
+
+    .ritual-links .button {
+        padding: 0.8rem 0.9rem;
+        color: var(--text);
+        background-color: var(--bg);
+        box-shadow: 0 16px 32px rgb(79 18 149 / 0.24);
+        transition: all 0.3s;
+
+        &:hover {
+            color: var(--text-light);
+            background-color: var(--primary);
+        }
+    }
+}
+
+@media (width < 768px) {
+    .join-ritual-section {
+        padding: 2rem 0;
+        grid-template-columns: 1fr;
+        grid-template-areas: "center" "left" "right";
+    }
+
+    .ritual-left,
+    .ritual-right {
+        width: 100%;
+    }
+}

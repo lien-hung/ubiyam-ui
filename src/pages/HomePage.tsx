@@ -1,7 +1,6 @@
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
-import { Navigation, Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import matchaPowder from "../assets/flavors/matcha-powder.webp";
 import organicPowder from "../assets/flavors/organic-powder.webp";
@@ -9,9 +8,16 @@ import strawberryPowder from "../assets/flavors/strawberry-powder.webp";
 import girlBanner from "../assets/ubiyam-girl-banner.webp";
 import { HomePageBanner } from "../components/HomePageBanner";
 import { Marquee } from "../components/Marquee";
-import { discoverItems, faqItems, mascotSection, organicItems, ritualItems, testimonialItems } from "../constants";
+import { discoverItems } from "../constants";
+import {
+  FAQSection,
+  JoinLoversSection,
+  JoinRitualSection,
+  OrganicVeganSection,
+  SlowReleaseSection,
+  TrackedSealedSection
+} from "../shared";
 import "../styles/HomePage.css";
-import { Accordion } from "../components/Accordion";
 
 export function HomePage() {
   return (
@@ -29,20 +35,7 @@ export function HomePage() {
         <span aria-hidden><i className="bi bi-1-circle" />One ingredient, that's it</span>
       </Marquee>
 
-      <section className="slow-release-section">
-        <div className="text">
-          <span>Slow-release carbs for balanced, crash-free energy.</span>
-          <h2>Pure Ingredients. Functional Benefits. No Compromises.</h2>
-        </div>
-        <div className="mascots">
-          {mascotSection.map((section) => (
-            <div className="mascot-section">
-              <img src={section.img} width={70} />
-              <h3>{section.text}</h3>
-            </div>
-          ))}
-        </div>
-      </section>
+      <SlowReleaseSection />
 
       <section className="flavors-section">
         <div className="text">
@@ -52,7 +45,7 @@ export function HomePage() {
             Crafted for taste, color, and clean everyday energy.
           </span>
         </div>
-        <Swiper className="slideshow" slidesPerView={3} slidesPerGroup={3} spaceBetween={30}>
+        <Swiper className="slideshow" slidesPerView={3} spaceBetween={30}>
           <SwiperSlide className="slide">
             <img src={organicPowder} />
             <div className="text">
@@ -126,14 +119,7 @@ export function HomePage() {
         </p>
       </section>
 
-      <section className="organic-vegan-section">
-        {organicItems.map((item) => (
-          <div className="organic-item">
-            <img src={item.img} width={70} />
-            <h3>{item.text}</h3>
-          </div>
-        ))}
-      </section>
+      <OrganicVeganSection />
 
       <a href="/products/ube-powder-purple-yam" className="home-banner girl-banner">
         <div className="home-banner__image"><img src={girlBanner} /></div>
@@ -157,90 +143,10 @@ export function HomePage() {
         <span aria-hidden>NO CAFFEINE SPIKES</span>
       </Marquee>
 
-      <section className="join-lovers-section">
-        <div className="rating">
-          <span className="stars">{[1, 2, 3, 4, 5].map(() => <i className="bi bi-star-fill" />)}</span>
-          <span className="rating-text">4.9/5</span>
-        </div>
-        <h2>
-          Join&nbsp;
-          <span className="underline">
-            12,000+ UBE Lovers
-            <svg className="squiggle" viewBox="-400 -55 730 60" stroke="currentColor" fill="none" role="presentation" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
-              <path stroke-linecap="round" stroke-width="30" pathLength="1" d="m -383.25 -6 c 55.25 -22 130.75 -33.5 293.25 -38 c 54.5 -0.5 195 -2.5 401 15"></path>
-            </svg>
-          </span>
-          &nbsp;Enjoying Their Daily Ritual
-        </h2>
-        <Swiper
-          className="slideshow"
-          modules={[Navigation, Pagination]}
-          slidesPerView={3}
-          spaceBetween={30}
-          loop
-          navigation
-          pagination={{ clickable: true }}
-        >
-          {testimonialItems.map((item) => (
-            <SwiperSlide className="slide">
-              <img src={item.img} />
-              <div className="text">
-                <span className="stars">{[1, 2, 3, 4, 5].map(() => <i className="bi bi-star-fill" />)}</span>
-                <h3>{item.title}</h3>
-                <p>{item.text}</p>
-              </div>
-              <div className="testimonial-name">
-                <i className="bi bi-patch-check-fill"></i>
-                <span>{item.testimonialName}</span>
-              </div>
-            </SwiperSlide>
-          ))}
-        </Swiper>
-      </section>
-
-      <section className="join-ritual-section">
-        <div className="ritual-left">
-          {ritualItems.filter((item) => item.side === "left").map((item) => <a href="https://instagram.com/ubiyam"><img src={item.img} /></a>)}
-        </div>
-        <div className="ritual-center">
-          <div>
-            <h2>JOIN THE RITUAL</h2>
-            <p>@ubiyam · 12,000+ UBE Lovers</p>
-          </div>
-          <div className="ritual-links">
-            <a className="button" href="https://instagram.com/ubiyam"><i className="bi bi-instagram"></i></a>
-            <a className="button" href="https://www.tiktok.com/@ubiyam"><i className="bi bi-tiktok"></i></a>
-            <a className="button" href="https://facebook.com/ubiyam"><i className="bi bi-facebook"></i></a>
-          </div>
-        </div>
-        <div className="ritual-right">
-          {ritualItems.filter((item) => item.side === "right").map((item) => <a href="https://instagram.com/ubiyam"><img src={item.img} /></a>)}
-        </div>
-      </section>
-
-      <section className="faq-section">
-        <h2>FAQ</h2>
-        <p>Questions? We got you covered!</p>
-        <Accordion items={faqItems} />
-      </section>
-
-      <section className="tracked-sealed-section">
-        <div className="text tracked-sealed-item">
-          <i className="bi bi-truck" />
-          <h3>Tracked & Sealed</h3>
-          <p>Carefully sealed and shipped with tracking, delivered fresh and ready to enjoy.</p>
-        </div>
-        <div className="text tracked-sealed-item">
-          <i className="bi bi-heart" />
-          <h3>Pure Philippine Purple Yam Powder</h3>
-          <p>No sugar. No fillers. No additives. Just real ube.</p>
-        </div>
-        <div className="text tracked-sealed-item">
-          <i className="bi bi-stars" />
-          <h3>Steady, Plant-Based Fuel</h3>
-          <p>Rich in natural antioxidants and fiber to support gut health and balanced energy.</p>
-        </div>
-      </section>
+      <JoinLoversSection />
+      <JoinRitualSection />
+      <FAQSection />
+      <TrackedSealedSection />
     </main>
   );
 }

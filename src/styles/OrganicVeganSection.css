@@ -1,0 +1,13 @@
+.organic-vegan-section {
+    flex-direction: row;
+    justify-content: space-between;
+
+    .organic-item img {
+        margin-bottom: 1rem;
+    }
+
+    .organic-item h3 {
+        font-size: 22px;
+        color: var(--primary);
+    }
+}

@@ -1,0 +1,35 @@
+.slow-release-section {
+    background-color: var(--secondary);
+    gap: 2rem;
+
+    .mascots {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .mascot-section img {
+        margin-bottom: 1rem;
+    }
+
+    .mascot-section h3 {
+        font-size: 24px;
+    }
+}
+
+@media (width < 768px) {
+    .slow-release-section {
+        .mascots {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+
+        .mascot-section img {
+            width: 60px;
+        }
+
+        .mascot-section h3 {
+            font-size: 18px;
+        }
+    }
+}
