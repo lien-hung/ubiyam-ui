@@ -57,3 +57,41 @@ h1, h2, h3, h4, h5, h6 {
   cursor: pointer;
   text-decoration: none;
 }
+
+.bold {
+  font-weight: bold;
+}
+
+.purple {
+  color: var(--primary);
+}
+
+.text-page {
+  max-width: 720px;
+  margin: auto;
+  padding: 2rem 1rem;
+
+  h2 {
+    font-size: 48px;
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+
+  p {
+    margin-bottom: 1rem;
+    line-height: 1.75;
+  }
+
+  a {
+    text-decoration: none;
+    color: var(--primary);
+  }
+
+  a:hover {
+    text-decoration: underline;
+  }
+
+  .no-margin * {
+    margin: 0;
+  }
+}

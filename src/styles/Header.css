@@ -174,6 +174,7 @@
         text-align: center;
 
         h2 {
+            font-size: 28px;
             margin-bottom: 2rem;
         }
 
@@ -183,11 +184,7 @@
         }
 
         .shopping-button {
-            background-color: var(--primary);
             color: var(--text-light);
-            font-weight: bold;
-            padding: 0.5rem 1rem;
-            border-radius: 999px;
         }
 
         h3 {

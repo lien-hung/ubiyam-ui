@@ -129,7 +129,7 @@ export function Header() {
 
         <div className="drawer-body">
           <h2>Your cart is empty</h2>
-          <a href="/products/ube-powder-purple-yam" className="shopping-button">Continue shopping</a>
+          <a href="/products/ube-powder-purple-yam" className="button shopping-button">Continue shopping</a>
           <h3>Have an account?</h3>
           <p><a>Log in</a> to check out faster.</p>
         </div>
