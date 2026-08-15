@@ -1,65 +1,16 @@
 import { useEffect, useMemo, useState, type ChangeEvent } from "react";
 import "../styles/AdminProductsPage.css";
+import type { Product, ProductRequest } from "../types/product";
+import { useAppDispatch, useAppSelector } from "../hooks";
+import { createProduct, deleteProduct, getAllProducts, updateProduct } from "../store/productSlice";
 
 type ProductStatus = "active" | "draft";
 
-type Product = {
-  id: string;
-  title: string;
-  handle: string;
-  price: number;
-  inventory: number;
-  status: ProductStatus;
-  tags: string;
-  image: string;
-  description: string;
-};
-
-const storageKey = "ubiyam-admin-products";
-
-const defaultProducts: Product[] = [
-  {
-    id: "prod-1",
-    title: "Organic UBE Powder",
-    handle: "ube-powder-purple-yam",
-    price: 24.99,
-    inventory: 120,
-    status: "active",
-    tags: "organic,ube,superfood,philippines",
-    image: "",
-    description: "100% organic ube powder grown in the Philippines. Perfect for lattes, smoothies, and baking.",
-  },
-  {
-    id: "prod-2",
-    title: "UBE & Strawberry Powder",
-    handle: "ube-strawberry-powder",
-    price: 29.99,
-    inventory: 0,
-    status: "draft",
-    tags: "ube,strawberry,limited",
-    image: "",
-    description: "A vibrant strawberry-infused ube blend for colorful drinks and desserts.",
-  },
-  {
-    id: "prod-3",
-    title: "UBE & Matcha Powder",
-    handle: "ube-matcha-powder",
-    price: 29.99,
-    inventory: 0,
-    status: "draft",
-    tags: "ube,matcha,wellness",
-    image: "",
-    description: "A smooth, earthy matcha blend with our signature ube powder.",
-  },
-];
-
-function createEmptyProduct(): Product {
+function createEmptyProduct(): ProductRequest {
   return {
-    id: "",
     title: "",
     handle: "",
     price: 0,
-    inventory: 0,
     status: "draft",
     tags: "",
     image: "",
@@ -68,26 +19,14 @@ function createEmptyProduct(): Product {
 }
 
 export function AdminProductsPage() {
-  const [products, setProducts] = useState<Product[]>([]);
-  const [selectedId, setSelectedId] = useState<string | null>(null);
-  const [formState, setFormState] = useState<Product>(createEmptyProduct());
+  const dispatch = useAppDispatch();
+  const products = useAppSelector((state) => state.product.products);
+  const isLoading = useAppSelector((state) => state.product.isLoading);
 
-  useEffect(() => {
-    const saved = window.localStorage.getItem(storageKey);
-    if (saved) {
-      try {
-        setProducts(JSON.parse(saved) as Product[]);
-        return;
-      } catch {
-        // ignore parse errors and load defaults
-      }
-    }
-    setProducts(defaultProducts);
-  }, []);
+  const [selectedId, setSelectedId] = useState<number | null>(null);
+  const [formState, setFormState] = useState<ProductRequest>(createEmptyProduct());
 
-  useEffect(() => {
-    window.localStorage.setItem(storageKey, JSON.stringify(products));
-  }, [products]);
+  useEffect(() => { dispatch(getAllProducts()); }, [dispatch]);
 
   const selectedProduct = useMemo(
     () => products.find((product) => product.id === selectedId) || null,
@@ -113,13 +52,12 @@ export function AdminProductsPage() {
     setFormState(createEmptyProduct());
   }
 
-  function handleSubmit(event: ChangeEvent<HTMLFormElement>) {
+  async function handleSubmit(event: ChangeEvent<HTMLFormElement>) {
     event.preventDefault();
 
-    const normalized: Product = {
+    const normalized: ProductRequest = {
       ...formState,
       price: Number(formState.price),
-      inventory: Number(formState.inventory),
       title: formState.title.trim(),
       handle: formState.handle.trim(),
       tags: formState.tags.trim(),
@@ -129,26 +67,36 @@ export function AdminProductsPage() {
     if (!normalized.title || !normalized.handle) {
       return;
     }
-
+    
     if (selectedId) {
-      setProducts((current) =>
-        current.map((product) => (product.id === selectedId ? { ...product, ...normalized } : product)),
-      );
+      await dispatch(updateProduct({ id: selectedId, data: normalized }));
     } else {
-      const id = crypto.randomUUID?.() ?? `prod-${Date.now()}`;
-      setProducts((current) => [{ ...normalized, id }, ...current]);
-      setSelectedId(id);
+      await dispatch(createProduct(normalized));
     }
+    handleNewProduct();
   }
 
-  function handleDelete() {
+  async function handleDelete() {
     if (!selectedId) {
       return;
     }
     if (window.confirm("Delete this product? This action cannot be undone.")) {
-      setProducts((current) => current.filter((product) => product.id !== selectedId));
+      await dispatch(deleteProduct(selectedId));
       handleNewProduct();
     }
+  }
+
+  if (isLoading) {
+    return (
+      <main className="admin-page">
+        <section className="admin-hero">
+          <div>
+            <p className="eyebrow">Admin Dashboard</p>
+            <h1>Loading...</h1>
+          </div>
+        </section>
+      </main>
+    );
   }
 
   return (
@@ -157,10 +105,6 @@ export function AdminProductsPage() {
         <div>
           <p className="eyebrow">Admin Dashboard</p>
           <h1>Manage Products</h1>
-          <p>
-            Create, update, and remove product entries with the same visual rhythm as the storefront.
-            Product data is stored locally for now and can be wired to a backend later.
-          </p>
         </div>
       </section>
 
@@ -183,7 +127,6 @@ export function AdminProductsPage() {
                   <th>Title</th>
                   <th>Handle</th>
                   <th>Price</th>
-                  <th>Inventory</th>
                   <th>Status</th>
                   <th />
                 </tr>
@@ -198,7 +141,6 @@ export function AdminProductsPage() {
                     <td>{product.title}</td>
                     <td>{product.handle}</td>
                     <td>${product.price.toFixed(2)}</td>
-                    <td>{product.inventory}</td>
                     <td>{product.status}</td>
                     <td>
                       <button type="button" className="table-action" onClick={(event) => { event.stopPropagation(); handleSelectProduct(product); }}>
@@ -247,16 +189,6 @@ export function AdminProductsPage() {
                 value={formState.price}
                 onChange={(event) => updateForm("price", Number(event.target.value))}
                 placeholder="24.99"
-              />
-            </label>
-
-            <label>
-              Inventory quantity
-              <input
-                type="number"
-                value={formState.inventory}
-                onChange={(event) => updateForm("inventory", Number(event.target.value))}
-                placeholder="120"
               />
             </label>
 

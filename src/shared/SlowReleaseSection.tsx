@@ -10,8 +10,8 @@ export function SlowReleaseSection() {
         <h2>Pure Ingredients. Functional Benefits. No Compromises.</h2>
       </div>
       <div className="mascots">
-        {mascotSection.map((section) => (
-          <div className="mascot-section">
+        {mascotSection.map((section, index) => (
+          <div key={`mascot-section-${index}`} className="mascot-section">
             <img src={section.img} width={70} />
             <h3>{section.text}</h3>
           </div>

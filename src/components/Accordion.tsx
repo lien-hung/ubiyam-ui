@@ -18,7 +18,7 @@ export function Accordion({ items }: AccordionProps) {
             <h3>{item.summary}</h3>
             <i className="bi bi-plus-lg" />
           </summary>
-          <p>{item.details}</p>
+          <p>{item.details.trim()}</p>
         </details>
       ))}
     </div>

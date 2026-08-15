@@ -6,7 +6,7 @@ export function JoinRitualSection() {
   return (
     <section className="join-ritual-section">
       <div className="ritual-left">
-        {ritualItems.filter((item) => item.side === "left").map((item) => <a href="https://instagram.com/ubiyam"><img src={item.img} /></a>)}
+        {ritualItems.filter((item) => item.side === "left").map((item, index) => <a key={`ritual-left-${index}`} href="https://instagram.com/ubiyam"><img src={item.img} /></a>)}
       </div>
       <div className="ritual-center">
         <div>
@@ -20,7 +20,7 @@ export function JoinRitualSection() {
         </div>
       </div>
       <div className="ritual-right">
-        {ritualItems.filter((item) => item.side === "right").map((item) => <a href="https://instagram.com/ubiyam"><img src={item.img} /></a>)}
+        {ritualItems.filter((item) => item.side === "right").map((item, index) => <a key={`ritual-right-${index}`} href="https://instagram.com/ubiyam"><img src={item.img} /></a>)}
       </div>
     </section>
   );

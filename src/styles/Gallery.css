@@ -73,3 +73,11 @@
     object-fit: cover;
     display: block;
 }
+
+@media (max-width: 768px) {
+    .gallery {
+        position: relative;
+        top: 0;
+        width: 100%;
+    }
+}

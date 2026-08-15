@@ -1,30 +1,41 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
+import { Provider } from 'react-redux'
 import { createBrowserRouter } from 'react-router'
+import { RouterProvider } from 'react-router/dom'
 import './index.css'
 import {
+  AboutPage,
+  AdminBundlesPage,
+  AdminProductsPage,
   HomePage,
   Layout,
   ProductPage,
-  AdminProductsPage,
-  AboutPage,
 } from './pages'
-import { RouterProvider } from 'react-router/dom'
+import store from './store/store'
 
 const router = createBrowserRouter([
   {
     Component: Layout,
     children: [
       { index: true, Component: HomePage },
-      { path: "/products/ube-powder-purple-yam", Component: ProductPage },
-      { path: "/admin/products", Component: AdminProductsPage },
+      { path: "/products/:slug", Component: ProductPage },
       { path: "/pages/about-ubiyam", Component: AboutPage },
+      {
+        path: "admin",
+        children: [
+          { path: "products", Component: AdminProductsPage },
+          { path: "bundles", Component: AdminBundlesPage },
+        ],
+      },
     ]
   }
 ]);
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <RouterProvider router={router} />
+    <Provider store={store}>
+      <RouterProvider router={router} />
+    </Provider>
   </StrictMode>,
 )

@@ -1,18 +1,14 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { useParams } from "react-router";
 import { Navigation, Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
-import threePack from "../assets/bundle-save/buy-three.avif";
-import twoPack from "../assets/bundle-save/buy-two.avif";
-import fiftyRecipe from "../assets/bundle-save/fifty-recipe-ebook.avif";
-import freeFrother from "../assets/bundle-save/frother.avif";
-import hundredRecipe from "../assets/bundle-save/hundred-recipe-ebook.avif";
-import freeKeychain from "../assets/bundle-save/keychain.avif";
-import onePack from "../assets/bundle-save/one-pack.avif";
+import latteBenefits from "../assets/latte-benefits.webp";
 import gutFriendly from "../assets/mascots/gut-support-mascot.avif";
 import caffeineFree from "../assets/mascots/no-caffeine-mascot.webp";
 import singleOrigin from "../assets/mascots/philipines-flag-mascot.avif";
 import ubeArabWoman from "../assets/ube-arab-woman.webp";
 import ubeFarm from "../assets/ube-farm.webp";
+import ubiyamWhiteLogo from "../assets/ubiyam-logo-white.png";
 import { Accordion } from "../components/Accordion";
 import { Gallery } from "../components/Gallery";
 import {
@@ -24,6 +20,7 @@ import {
   traceabilityAccordionItems,
   trustedSuperfoodAccordionItems,
 } from "../constants";
+import { useAppDispatch, useAppSelector } from "../hooks";
 import {
   FAQSection,
   JoinLoversSection,
@@ -32,15 +29,27 @@ import {
   SlowReleaseSection,
   TrackedSealedSection
 } from "../shared";
+import { getAllProducts } from "../store/productSlice";
 import "../styles/ProductPage.css";
-import latteBenefits from "../assets/latte-benefits.webp";
-import ubiyamWhiteLogo from "../assets/ubiyam-logo-white.png";
+import type { Bundle } from "../types/bundle";
 
 export function ProductPage() {
-  const [packCount, setPackCount] = useState(1);
+  const { slug } = useParams();
+  const dispatch = useAppDispatch();
+
+  const allProducts = useAppSelector((state) => state.product.products);
+  const [selectedBundle, setSelectedBundle] = useState<Bundle>();
   const [purchaseOption, setPurchaseOption] = useState<"subscribe" | "one-time">("subscribe");
   const [playingIndices, setPlayingIndices] = useState<number[]>([]);
   const videoRefs = useRef<HTMLVideoElement[]>([]);
+  
+  const product = allProducts.find((p) => p.handle === slug);
+  const totalPrice = (product?.price ?? 0) * (selectedBundle?.buyQuantity ?? 0);
+
+  useEffect(() => { dispatch(getAllProducts()); }, [dispatch, slug]);
+
+  if (!product) return;
+
 
   return (
     <main>
@@ -48,29 +57,16 @@ export function ProductPage() {
         <Gallery items={galleryItems} />
         <div className="product-info">
           <div className="product-tags">
-            <span className="product-tag" id="usda-tag">USDA Organic</span>
-            <span className="product-tag" id="purple-era-tag">Your Purple Era Starts Here</span>
+            {product.tags.split(",").map((tag, index) => <span key={`tag${index}-${tag}`}>{tag}</span>)}
           </div>
 
-          <h2>Organic UBE Powder</h2>
+          <h2>{product.title}</h2>
           <div className="rating">
-            <span className="stars">{[1, 2, 3, 4, 5].map(() => <i className="bi bi-star-fill" />)}</span>
+            <span className="stars">{[1, 2, 3, 4, 5].map((num) => <i key={`star-${num}`} className="bi bi-star-fill" />)}</span>
             <span className="rating-text">Rated 4.9/5</span>
           </div>
 
-          <p>
-            100% organic ube, grown in the Philippines 🇵🇭.
-            Softly sweet with natural notes of vanilla and hazelnut, zero added sugar.
-            Perfect for lattes, smoothies, baking, and desserts.
-          </p>
-
-          <div className="emoji-benefits">
-            <p>⚡ Clean, sustained energy, no caffeine, no crash</p>
-            <p>💜 Antioxidant-rich purple superfood</p>
-            <p>🌿 Naturally contains fiber for everyday digestion</p>
-            <p>✨ One ingredient. Nothing else.</p>
-            <p>☕ 20+ servings per bag, about $1 a cup</p>
-          </div>
+          <p className="product-description">{product.description}</p>
 
           <div className="mascot-benefits">
             <div className="mascot-item">
@@ -91,101 +87,48 @@ export function ProductPage() {
             <div className="bundle-title">Bundle & Save</div>
 
             <div className="bundle-list">
-              <div className={`bundle-item ${packCount === 1 ? "selected" : ""}`}>
-                <input
-                  type="radio"
-                  name="current-bundle"
-                  value={1}
-                  id="one-pack-bundle"
-                  checked={packCount === 1}
-                  onChange={(e) => setPackCount(Number(e.target.value))}
-                />
-                <label htmlFor="one-pack-bundle">
+              {product.bundles.map((bundle) => (
+                <label key={`bundle-${bundle.id}`} className={`bundle-item ${selectedBundle?.id === bundle.id && "selected"}`}>
+                  <input
+                    type="radio"
+                    name="current-bundle"
+                    value={bundle.id}
+                    checked={selectedBundle?.id === bundle.id}
+                    onChange={() => setSelectedBundle(bundle)}
+                  />
                   <div className="bundle-info">
-                    <img src={onePack} width={50} />
+                    <img src={`${bundle.imageUrl}?height=50`} width={50} />
+                    {bundle.badgeText && <div className="bundle-pill">{bundle.badgeText}</div>}
                     <div className="bundle-copy">
-                      <strong>1 Pack</strong>
-                      <span>100g Organic UBE Powder</span>
+                      <strong>{bundle.title}</strong>
+                      <span>{bundle.subtitle}</span>
                     </div>
                     <div className="bundle-price">
-                      <strong>$24.99</strong>
-                      <span>$29.99</span>
+                      <strong>${(product.price * bundle.buyQuantity).toFixed(2)}</strong>
                     </div>
                   </div>
+                  {bundle.freeGifts.length > 0 && (
+                    <div className="bundle-gifts">
+                      {bundle.freeGifts.map((gift) => {
+                        const productGift = allProducts.find((p) => p.id === gift.productId);
+                        return (
+                          <div key={`bundle-gift-${gift.id}`} className="bundle-gift">
+                            {productGift && (
+                              <a href={`/products/${productGift.handle}`}>
+                                <img src={`${productGift.image}?height=30`} height={30} />
+                              </a>
+                            )}
+                            <span>{gift.text}</span>
+                            {productGift && gift.showPrice && (
+                              <span className="bundle-gift-price">${productGift.price.toFixed(2)}</span>
+                            )}
+                          </div>
+                        )
+                      })}
+                    </div>
+                  )}
                 </label>
-              </div>
-
-              <div className={`bundle-item ${packCount === 2 ? "selected" : ""}`}>
-                <input
-                  type="radio"
-                  name="current-bundle"
-                  value={2}
-                  id="two-pack-bundle"
-                  checked={packCount === 2}
-                  onChange={(e) => setPackCount(Number(e.target.value))}
-                />
-                <label htmlFor="two-pack-bundle">
-                  <div className="bundle-info">
-                    <img src={twoPack} width={50} />
-                    <div className="bundle-pill">Most Popular</div>
-                    <div className="bundle-copy">
-                      <strong>Buy 2 Get 1 FREE</strong>
-                      <span>300g Organic UBE Powder</span>
-                    </div>
-                    <div className="bundle-price">
-                      <strong>$49.98</strong>
-                      <span>$89.97</span>
-                    </div>
-                  </div>
-                  <div className="bundle-gifts">
-                    <div className="bundle-gift">
-                      <a href="/products/50-organic-ube-recipes">
-                        <img src={fiftyRecipe} height={30} />
-                      </a>
-                      <span>+ Free 50+ UBE Recipes</span>
-                    </div>
-                  </div>
-                </label>
-              </div>
-
-              <div className={`bundle-item ${packCount === 3 ? "selected" : ""}`}>
-                <input
-                  type="radio"
-                  name="current-bundle"
-                  value={3}
-                  id="three-pack-bundle"
-                  checked={packCount === 3}
-                  onChange={(e) => setPackCount(Number(e.target.value))}
-                />
-                <label htmlFor="three-pack-bundle">
-                  <div className="bundle-info">
-                    <img src={threePack} width={50} />
-                    <div className="bundle-pill">Best Value</div>
-                    <div className="bundle-copy">
-                      <strong>Buy 3 Get 2 FREE</strong>
-                      <span>500g Organic UBE Powder</span>
-                    </div>
-                    <div className="bundle-price">
-                      <strong>$74.97</strong>
-                      <span>$149.95</span>
-                    </div>
-                  </div>
-                  <div className="bundle-gifts">
-                    <div className="bundle-gift">
-                      <img src={freeFrother} height={30} />
-                      <span>+ Free UBIYAM Frother</span>
-                    </div>
-                    <div className="bundle-gift">
-                      <img src={freeKeychain} height={30} />
-                      <span>+ Free UBIYAM Keychain</span>
-                    </div>
-                    <div className="bundle-gift">
-                      <img src={hundredRecipe} height={30} />
-                      <span>+ Free 100+ UBE Recipes</span>
-                    </div>
-                  </div>
-                </label>
-              </div>
+              ))}
             </div>
 
             <div className="purchase-options">
@@ -216,11 +159,10 @@ export function ProductPage() {
             </div>
           </div>
 
-          <button className="button add-to-cart">
-            ADD TO CART
+          <button disabled={!selectedBundle} className={`button add-to-cart ${!selectedBundle && "disabled"}`}>
+            {totalPrice !== 0 && `$${totalPrice.toFixed(2)} • `}ADD TO CART
           </button>
 
-          <p className="product-promo"><i className="bi bi-truck"></i>Free Shipping on Orders $35+</p>
           <p className="product-promo"><i className="bi bi-patch-check-fill"></i>60-day Satisfaction Guarantee</p>
 
           <Accordion items={productAccordionItems} />
@@ -325,13 +267,13 @@ export function ProductPage() {
           <span className="underline">
             UBE Latte!
             <svg className="squiggle" viewBox="-347 -30.1947 694 96.19" stroke="currentColor" fill="none" role="presentation" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-              <path stroke-linecap="round" stroke-width="20" pathLength="1" d="M-335,54 C-335,54 -171,-58 -194,-3 C-217,52 -224.1199951171875,73.552001953125 -127,11 C-68,-27 -137,50 -33,42 C31.43899917602539,37.042999267578125 147.14700317382812,-29.308000564575195 335,2"></path>
+              <path strokeLinecap="round" strokeWidth="20" pathLength="1" d="M-335,54 C-335,54 -171,-58 -194,-3 C-217,52 -224.1199951171875,73.552001953125 -127,11 C-68,-27 -137,50 -33,42 C31.43899917602539,37.042999267578125 147.14700317382812,-29.308000564575195 335,2"></path>
             </svg>
           </span>
         </h2>
         <div className="prep-video-container">
-          {lattePrepItems.map((item) => (
-            <div className="slide">
+          {lattePrepItems.map((item, index) => (
+            <div key={`prep-item-${index}`} className="slide">
               <video
                 src={item.src}
                 width="100%"
@@ -368,7 +310,7 @@ export function ProductPage() {
               <span className="underline">
                 BODY + GUT
                 <svg className="squiggle" viewBox="-400 -55 730 60" stroke="currentColor" fill="none" role="presentation" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
-                  <path stroke-linecap="round" stroke-width="30" pathLength="1" d="m -383.25 -6 c 55.25 -22 130.75 -33.5 293.25 -38 c 54.5 -0.5 195 -2.5 401 15"></path>
+                  <path strokeLinecap="round" strokeWidth="30" pathLength="1" d="m -383.25 -6 c 55.25 -22 130.75 -33.5 293.25 -38 c 54.5 -0.5 195 -2.5 401 15"></path>
                 </svg>
               </span>
             </h2>
