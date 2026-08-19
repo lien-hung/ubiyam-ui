@@ -8,6 +8,7 @@ import {
   AboutPage,
   AdminBundlesPage,
   AdminProductsPage,
+  CartPage,
   HomePage,
   Layout,
   ProductPage,
@@ -19,6 +20,7 @@ const router = createBrowserRouter([
     Component: Layout,
     children: [
       { index: true, Component: HomePage },
+      { path: "/cart", Component: CartPage },
       { path: "/products/:slug", Component: ProductPage },
       { path: "/pages/about-ubiyam", Component: AboutPage },
       {

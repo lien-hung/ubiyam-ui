@@ -11,6 +11,7 @@ function createEmptyProduct(): ProductRequest {
     title: "",
     handle: "",
     price: 0,
+    compareAtPrice: 0,
     status: "draft",
     tags: "",
     image: "",
@@ -58,6 +59,7 @@ export function AdminProductsPage() {
     const normalized: ProductRequest = {
       ...formState,
       price: Number(formState.price),
+      compareAtPrice: formState.compareAtPrice !== 0 ? Number(formState.compareAtPrice) : undefined,
       title: formState.title.trim(),
       handle: formState.handle.trim(),
       tags: formState.tags.trim(),
@@ -127,6 +129,7 @@ export function AdminProductsPage() {
                   <th>Title</th>
                   <th>Handle</th>
                   <th>Price</th>
+                  <th>Compare-at price</th>
                   <th>Status</th>
                   <th />
                 </tr>
@@ -141,6 +144,7 @@ export function AdminProductsPage() {
                     <td>{product.title}</td>
                     <td>{product.handle}</td>
                     <td>${product.price.toFixed(2)}</td>
+                    <td>{product.compareAtPrice ? `$${product.compareAtPrice.toFixed(2)}` : "N/A"}</td>
                     <td>{product.status}</td>
                     <td>
                       <button type="button" className="table-action" onClick={(event) => { event.stopPropagation(); handleSelectProduct(product); }}>
@@ -193,6 +197,17 @@ export function AdminProductsPage() {
             </label>
 
             <label>
+              Compare-at price
+              <input
+                type="number"
+                step="0.01"
+                value={formState.compareAtPrice}
+                onChange={(event) => updateForm("compareAtPrice", Number(event.target.value))}
+                placeholder="Higher than sale price"
+              />
+            </label>
+
+            <label>
               Status
               <select value={formState.status} onChange={(event) => updateForm("status", event.target.value as ProductStatus)}>
                 <option value="active">Active</option>
@@ -230,13 +245,13 @@ export function AdminProductsPage() {
 
             <div className="form-actions">
               <button type="submit" className="button">
-                Save product
+                Save
               </button>
-              {selectedId ? (
+              {selectedId && (
                 <button type="button" className="button secondary" onClick={handleDelete}>
-                  Delete product
+                  Delete
                 </button>
-              ) : null}
+              )}
             </div>
           </form>
         </div>

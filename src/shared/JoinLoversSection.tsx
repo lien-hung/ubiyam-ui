@@ -1,10 +1,13 @@
 import { Navigation, Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { testimonialItems } from "../constants";
+import { useMediaQuery } from "../hooks";
 
 import "../styles/JoinLoversSection.css";
 
 export function JoinLoversSection() {
+  const isMobile = useMediaQuery("(width <= 768px)");
+
   return (
     <section className="join-lovers-section">
       <div className="rating">
@@ -24,7 +27,7 @@ export function JoinLoversSection() {
       <Swiper
         className="slideshow"
         modules={[Navigation, Pagination]}
-        slidesPerView={3}
+        slidesPerView={isMobile ? 1 : 3}
         spaceBetween={30}
         loop
         navigation

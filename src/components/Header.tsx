@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
-
-import ubiyamLogo from "../assets/ubiyam-logo.jpg";
 import ubiyamDrawerLogo from "../assets/ubiyam-logo-drawer.png";
-
+import ubiyamLogo from "../assets/ubiyam-logo.jpg";
+import { useScrollDirection } from "../hooks";
 import "../styles/Header.css";
 
 export function Header() {
+  const isScrolledDown = !useScrollDirection();
   const [isMenuDrawerOpen, setIsMenuDrawerOpen] = useState(false);
   const [isCartDrawerOpen, setIsCartDrawerOpen] = useState(false);
   const isDrawerOpen = isMenuDrawerOpen || isCartDrawerOpen;
@@ -19,7 +19,7 @@ export function Header() {
 
   return (
     <>
-      <header className="header-bar">
+      <header className={`header-bar ${isScrolledDown && "hidden"}`}>
         <span className="hamburger" onClick={() => setIsMenuDrawerOpen(true)}>
           <i className="bi bi-list"></i>
         </span>

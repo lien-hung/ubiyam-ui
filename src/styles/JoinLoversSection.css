@@ -31,3 +31,10 @@
         margin-right: 0.3rem;
     }
 }
+
+@media (width <= 768px) {
+    .join-lovers-section {
+        flex-direction: column;
+        gap: 0 !important;
+    }
+}

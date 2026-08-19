@@ -11,3 +11,10 @@
         color: var(--primary);
     }
 }
+
+@media (max-width: 768px) {
+    .organic-vegan-section {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+    }
+}

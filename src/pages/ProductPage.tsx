@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { useParams } from "react-router";
+import { useParams, useNavigate } from "react-router";
 import { Navigation, Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import latteBenefits from "../assets/latte-benefits.webp";
@@ -20,7 +20,7 @@ import {
   traceabilityAccordionItems,
   trustedSuperfoodAccordionItems,
 } from "../constants";
-import { useAppDispatch, useAppSelector } from "../hooks";
+import { useAppDispatch, useAppSelector, useMediaQuery } from "../hooks";
 import {
   FAQSection,
   JoinLoversSection,
@@ -30,29 +30,35 @@ import {
   TrackedSealedSection
 } from "../shared";
 import { getAllProducts } from "../store/productSlice";
+import { addToCart } from "../store/cartSlice";
 import "../styles/ProductPage.css";
 import type { Bundle } from "../types/bundle";
 
 export function ProductPage() {
   const { slug } = useParams();
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   const allProducts = useAppSelector((state) => state.product.products);
+  const product = allProducts.find((p) => p.handle === slug);
   const [selectedBundle, setSelectedBundle] = useState<Bundle>();
-  const [purchaseOption, setPurchaseOption] = useState<"subscribe" | "one-time">("subscribe");
   const [playingIndices, setPlayingIndices] = useState<number[]>([]);
   const videoRefs = useRef<HTMLVideoElement[]>([]);
-  
-  const product = allProducts.find((p) => p.handle === slug);
+  const isMobile = useMediaQuery("(max-width: 768px)");
   const totalPrice = (product?.price ?? 0) * (selectedBundle?.buyQuantity ?? 0);
 
   useEffect(() => { dispatch(getAllProducts()); }, [dispatch, slug]);
 
+  const handleAddToCart = () => {
+    if (!product || !selectedBundle) return;
+    dispatch(addToCart({ product, bundle: selectedBundle }));
+    navigate("/cart");
+  }
+
   if (!product) return;
 
-
   return (
-    <main>
+    <main className="product-page">
       <section className="product-section">
         <Gallery items={galleryItems} />
         <div className="product-info">
@@ -105,6 +111,7 @@ export function ProductPage() {
                     </div>
                     <div className="bundle-price">
                       <strong>${(product.price * bundle.buyQuantity).toFixed(2)}</strong>
+                      {product.compareAtPrice && (<span>${(product.compareAtPrice * bundle.buyQuantity).toFixed(2)}</span>)}
                     </div>
                   </div>
                   {bundle.freeGifts.length > 0 && (
@@ -130,36 +137,13 @@ export function ProductPage() {
                 </label>
               ))}
             </div>
-
-            <div className="purchase-options">
-              <div className={`purchase-option ${purchaseOption === "subscribe" && "selected"}`} onClick={() => setPurchaseOption("subscribe")}>
-                <div className="purchase-option-main">
-                  <div className="purchase-option-radio"></div>
-                  <div className="purchase-option-content">
-                    <strong>Subscribe & Save</strong>
-                    <span>Delivery every 30 days</span>
-                  </div>
-                </div>
-                <div className="purchase-option-highlights">
-                  <div><i className="bi bi-check2"></i>60-Day Guarantee</div>
-                  <div><i className="bi bi-check2"></i>Free Shipping</div>
-                  <div><i className="bi bi-check2"></i>Early access to limited drops</div>
-                  <div><i className="bi bi-check2"></i>Pause or Cancel Any Time</div>
-                </div>
-              </div>
-
-              <div className={`purchase-option ${purchaseOption === "one-time" && "selected"}`} onClick={() => setPurchaseOption("one-time")}>
-                <div className="purchase-option-main">
-                  <div className="purchase-option-radio"></div>
-                  <div className="purchase-option-content">
-                    <strong>One-time purchase</strong>
-                  </div>
-                </div>
-              </div>
-            </div>
           </div>
 
-          <button disabled={!selectedBundle} className={`button add-to-cart ${!selectedBundle && "disabled"}`}>
+          <button
+            disabled={!selectedBundle}
+            className={`button add-to-cart ${!selectedBundle && "disabled"}`}
+            onClick={handleAddToCart}
+          >
             {totalPrice !== 0 && `$${totalPrice.toFixed(2)} • `}ADD TO CART
           </button>
 
@@ -176,7 +160,7 @@ export function ProductPage() {
         <Swiper
           className="slideshow"
           modules={[Navigation, Pagination]}
-          slidesPerView={3}
+          slidesPerView={isMobile ? 1 : 3}
           spaceBetween={30}
           loop
           navigation

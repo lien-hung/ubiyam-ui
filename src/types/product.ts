@@ -4,6 +4,7 @@ export type ProductRequest = {
   title: string;
   handle: string;
   price: number;
+  compareAtPrice?: number;
   status: string;
   tags: string;
   image: string;
@@ -15,6 +16,7 @@ export type Product = {
   title: string;
   handle: string;
   price: number;
+  compareAtPrice?: number;
   status: string;
   tags: string;
   image: string;

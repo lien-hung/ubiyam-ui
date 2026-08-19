@@ -3,6 +3,13 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    background-color: #ffffff;
+    position: sticky;
+    top: 0;
+    z-index: 30;
+    transform: translateY(0);
+    transition: transform 0.3s ease-out;
+    border-bottom: 1px solid var(--border-text);
 
     a img {
         height: 2rem;
@@ -30,6 +37,10 @@
         display: flex;
         gap: 1rem;
     }
+}
+
+.header-bar.hidden {
+    transform: translateY(-100%);
 }
 
 .drawer-overlay {
