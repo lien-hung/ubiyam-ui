@@ -2,13 +2,13 @@ import { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router";
 import { Navigation, Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
+import siteLogo from "../assets/beyond-the-roots-logo.jfif";
 import latteBenefits from "../assets/latte-benefits.webp";
 import gutFriendly from "../assets/mascots/gut-support-mascot.avif";
 import caffeineFree from "../assets/mascots/no-caffeine-mascot.webp";
 import singleOrigin from "../assets/mascots/philipines-flag-mascot.avif";
 import ubeArabWoman from "../assets/ube-arab-woman.webp";
 import ubeFarm from "../assets/ube-farm.webp";
-import ubiyamWhiteLogo from "../assets/ubiyam-logo-white.png";
 import { Accordion } from "../components/Accordion";
 import { Gallery } from "../components/Gallery";
 import {
@@ -315,7 +315,7 @@ export function ProductPage() {
           <thead className="comparison-row comparison-row-header">
             <tr>
               <th className="comparison-cell"></th>
-              <th className="comparison-cell comparison-brand-heading"><img src={ubiyamWhiteLogo} width={90} /></th>
+              <th className="comparison-cell comparison-brand-heading"><img src={siteLogo} width={60} /></th>
               <th className="comparison-cell comparison-other-heading">Others</th>
             </tr>
           </thead>

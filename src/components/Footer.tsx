@@ -1,5 +1,4 @@
-import ubiyamWhiteLogo from "../assets/ubiyam-logo-white.png";
-
+import siteLogo from "../assets/beyond-the-roots-logo.jfif";
 import "../styles/Footer.css";
 
 export function Footer() {
@@ -7,7 +6,7 @@ export function Footer() {
     <footer>
       <div className="footer-main">
         <div className="footer-links">
-          <img src={ubiyamWhiteLogo} />
+          <img src={siteLogo} />
           <div className="footer-right">
             <div className="footer-section">
               <h2>SHOP</h2>
