@@ -7,6 +7,7 @@ import {
   Newsletter,
   ScrollTopButton
 } from "../components";
+import { ToastContainer } from "react-toastify";
 
 export function Layout() {
   return (
@@ -18,6 +19,7 @@ export function Layout() {
       <Footer />
       <FreeEbookButton />
       <ScrollTopButton />
+      <ToastContainer />
     </>
   )
 }

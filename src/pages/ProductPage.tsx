@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { useParams, useNavigate } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import { Navigation, Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import latteBenefits from "../assets/latte-benefits.webp";
@@ -29,8 +29,8 @@ import {
   SlowReleaseSection,
   TrackedSealedSection
 } from "../shared";
-import { getAllProducts } from "../store/productSlice";
 import { addToCart } from "../store/cartSlice";
+import { getProductByHandle } from "../store/productSlice";
 import "../styles/ProductPage.css";
 import type { Bundle } from "../types/bundle";
 
@@ -39,15 +39,14 @@ export function ProductPage() {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
-  const allProducts = useAppSelector((state) => state.product.products);
-  const product = allProducts.find((p) => p.handle === slug);
+  const product = useAppSelector((state) => state.product.products[0]);
   const [selectedBundle, setSelectedBundle] = useState<Bundle>();
   const [playingIndices, setPlayingIndices] = useState<number[]>([]);
   const videoRefs = useRef<HTMLVideoElement[]>([]);
   const isMobile = useMediaQuery("(max-width: 768px)");
   const totalPrice = (product?.price ?? 0) * (selectedBundle?.buyQuantity ?? 0);
 
-  useEffect(() => { dispatch(getAllProducts()); }, [dispatch, slug]);
+  useEffect(() => { dispatch(getProductByHandle(slug ?? "")); }, [dispatch, slug]);
 
   const handleAddToCart = () => {
     if (!product || !selectedBundle) return;
@@ -62,9 +61,11 @@ export function ProductPage() {
       <section className="product-section">
         <Gallery items={galleryItems} />
         <div className="product-info">
-          <div className="product-tags">
-            {product.tags.split(",").map((tag, index) => <span key={`tag${index}-${tag}`}>{tag}</span>)}
-          </div>
+          {product.tags && (
+            <div className="product-tags">
+              {product.tags.split(",").map((tag, index) => <span key={`tag${index}-${tag}`}>{tag}</span>)}
+            </div>
+          )}
 
           <h2>{product.title}</h2>
           <div className="rating">
@@ -93,7 +94,7 @@ export function ProductPage() {
             <div className="bundle-title">Bundle & Save</div>
 
             <div className="bundle-list">
-              {product.bundles.map((bundle) => (
+              {product.bundles.toSorted((a, b) => a.buyQuantity - b.buyQuantity).map((bundle) => (
                 <label key={`bundle-${bundle.id}`} className={`bundle-item ${selectedBundle?.id === bundle.id && "selected"}`}>
                   <input
                     type="radio"
@@ -116,22 +117,17 @@ export function ProductPage() {
                   </div>
                   {bundle.freeGifts.length > 0 && (
                     <div className="bundle-gifts">
-                      {bundle.freeGifts.map((gift) => {
-                        const productGift = allProducts.find((p) => p.id === gift.productId);
-                        return (
-                          <div key={`bundle-gift-${gift.id}`} className="bundle-gift">
-                            {productGift && (
-                              <a href={`/products/${productGift.handle}`}>
-                                <img src={`${productGift.image}?height=30`} height={30} />
-                              </a>
-                            )}
-                            <span>{gift.text}</span>
-                            {productGift && gift.showPrice && (
-                              <span className="bundle-gift-price">${productGift.price.toFixed(2)}</span>
-                            )}
-                          </div>
-                        )
-                      })}
+                      {bundle.freeGifts.map((gift) => (
+                        <div key={`bundle-gift-${gift.id}`} className="bundle-gift">
+                          <a href={`/products/${gift.product.handle}`}>
+                            <img src={`${gift.product.image}?height=30`} height={30} />
+                          </a>
+                          <span>{gift.text}</span>
+                          {gift.showPrice && (
+                            <span className="bundle-gift-price">${Number(gift.product.price).toFixed(2)}</span>
+                          )}
+                        </div>
+                      ))}
                     </div>
                   )}
                 </label>

@@ -20,6 +20,8 @@
   --secondary-gradient: linear-gradient(89deg, #f4d8f6 15%, #ffffff 85%);
   --bar-border: rgb(161 106 192 / 0.3);
   --bar-selected-border: rgb(161 106 192 / 1);
+  --slide-item-bg: #f4e1ff;
+  --slide-item-border: #6d388b;
 
   color: var(--text);
   interpolate-size: allow-keywords;
@@ -43,6 +45,17 @@ h1, h2, h3, h4, h5, h6 {
   margin: 0;
   font-weight: normal;
   font-family: 'Barlow Condensed', sans-serif;
+}
+
+section {
+  padding: 2rem 4rem;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+}
+
+section.Toastify {
+  padding: 0;
 }
 
 .button {

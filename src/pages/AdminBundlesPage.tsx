@@ -5,6 +5,7 @@ import { useAppDispatch, useAppSelector } from "../hooks";
 import { createBundle, deleteBundle, getAllBundles, updateBundle } from "../store/bundleSlice";
 import { addGift, deleteGift } from "../store/bundleGiftSlice";
 import { getAllProducts } from "../store/productSlice";
+import { toast } from "react-toastify";
 
 interface BundleFormState extends BundleRequest {
   image: string;
@@ -107,12 +108,20 @@ export function AdminBundlesPage() {
       return;
     }
 
-    if (selectedBundleId) {
-      await dispatch(updateBundle({ id: selectedBundleId, data: normalized }));
-    } else {
-      await dispatch(createBundle(normalized));
+    try {
+      if (selectedBundleId) {
+        await dispatch(updateBundle({ id: selectedBundleId, data: normalized }));
+        toast("Bundle updated successfully");
+      } else {
+        await dispatch(createBundle(normalized));
+        toast("Bundle created successfully");
+      }
+    } catch (error) {
+      toast(`An error occurred: ${error}`);
+      console.error(error);
+    } finally {
+      handleNewBundle();
     }
-    handleNewBundle();
   }
 
   async function handleDeleteBundle() {
@@ -120,8 +129,15 @@ export function AdminBundlesPage() {
       return;
     }
     if (window.confirm("Delete this bundle? This action cannot be undone.")) {
-      await dispatch(deleteBundle(selectedBundleId));
-      handleNewBundle();
+      try {
+        await dispatch(deleteBundle(selectedBundleId));
+        toast("Bundle deleted successfully");
+      } catch (error) {
+        toast(`An error occurred: ${error}`);
+        console.error(error);
+      } finally {
+        handleNewBundle();
+      }
     }
   }
 
@@ -355,7 +371,7 @@ export function AdminBundlesPage() {
                       <option value={0}>Select a product...</option>
                       {products.map((product) => (
                         <option key={product.id} value={product.id}>
-                          {product.title} (${product.price.toFixed(2)})
+                          {product.title} (${Number(product.price).toFixed(2)})
                         </option>
                       ))}
                     </select>
@@ -413,28 +429,32 @@ export function AdminBundlesPage() {
                 {bundleGiftsList.length === 0 ? (
                   <p className="empty-state">No gifts added yet. Click "Add gift" to include free items with this bundle.</p>
                 ) : (
-                  bundleGiftsList.map((gift) => (
-                    <div key={gift.id} className="gift-item">
-                      <div className="gift-info">
-                        <div className="gift-type-badge">{gift.giftType}</div>
-                        <div>
-                          <p className="gift-text">{gift.text}</p>
-                          <p className="gift-meta">
-                            Qty: {gift.quantity}
-                            {gift.showPrice && products.some((p) => p.id === gift.productId) ? ` • $${products.find((p) => p.id === gift.productId)?.price.toFixed(2)}` : ""}
-                          </p>
+                  bundleGiftsList.map((gift) => {
+                    const productGift = products.find((p) => p.id === gift.productId);
+
+                    return (
+                      <div key={gift.id} className="gift-item">
+                        <div className="gift-info">
+                          <div className="gift-type-badge">{gift.giftType}</div>
+                          <div>
+                            <p className="gift-text">{gift.text}</p>
+                            <p className="gift-meta">
+                              Qty: {gift.quantity}
+                              {gift.showPrice && productGift ? ` • $${Number(productGift.price).toFixed(2)}` : ""}
+                            </p>
+                          </div>
                         </div>
+                        <button
+                          type="button"
+                          className="delete-gift-btn"
+                          onClick={() => handleDeleteGift(gift.id)}
+                          title="Remove gift"
+                        >
+                          ✕
+                        </button>
                       </div>
-                      <button
-                        type="button"
-                        className="delete-gift-btn"
-                        onClick={() => handleDeleteGift(gift.id)}
-                        title="Remove gift"
-                      >
-                        ✕
-                      </button>
-                    </div>
-                  ))
+                    )
+                  })
                 )}
               </div>
             </div>

@@ -3,6 +3,7 @@ import "../styles/AdminProductsPage.css";
 import type { Product, ProductRequest } from "../types/product";
 import { useAppDispatch, useAppSelector } from "../hooks";
 import { createProduct, deleteProduct, getAllProducts, updateProduct } from "../store/productSlice";
+import { toast } from "react-toastify";
 
 type ProductStatus = "active" | "draft";
 
@@ -59,10 +60,10 @@ export function AdminProductsPage() {
     const normalized: ProductRequest = {
       ...formState,
       price: Number(formState.price),
-      compareAtPrice: formState.compareAtPrice !== 0 ? Number(formState.compareAtPrice) : undefined,
+      ...(formState.compareAtPrice && { compareAtPrice: Number(formState.compareAtPrice) }),
       title: formState.title.trim(),
       handle: formState.handle.trim(),
-      tags: formState.tags.trim(),
+      tags: formState.tags?.trim(),
       description: formState.description.trim(),
     };
 
@@ -70,12 +71,20 @@ export function AdminProductsPage() {
       return;
     }
     
-    if (selectedId) {
-      await dispatch(updateProduct({ id: selectedId, data: normalized }));
-    } else {
-      await dispatch(createProduct(normalized));
+    try {
+      if (selectedId) {
+        await dispatch(updateProduct({ id: selectedId, data: normalized }));
+        toast("Product updated successfully");
+      } else {
+        await dispatch(createProduct(normalized));
+        toast("Product created successfully");
+      }
+    } catch (error) {
+      toast(`An error occurred: ${error}`);
+      console.error(error);
+    } finally {
+      handleNewProduct();
     }
-    handleNewProduct();
   }
 
   async function handleDelete() {
@@ -83,8 +92,15 @@ export function AdminProductsPage() {
       return;
     }
     if (window.confirm("Delete this product? This action cannot be undone.")) {
-      await dispatch(deleteProduct(selectedId));
-      handleNewProduct();
+      try {
+        await dispatch(deleteProduct(selectedId));
+        toast("Product deleted successfully");
+      } catch (error) {
+        toast(`An error occurred: ${error}`);
+        console.error(error);
+      } finally {
+        handleNewProduct();
+      }
     }
   }
 
@@ -143,8 +159,8 @@ export function AdminProductsPage() {
                   >
                     <td>{product.title}</td>
                     <td>{product.handle}</td>
-                    <td>${product.price.toFixed(2)}</td>
-                    <td>{product.compareAtPrice ? `$${product.compareAtPrice.toFixed(2)}` : "N/A"}</td>
+                    <td>${Number(product.price).toFixed(2)}</td>
+                    <td>{product.compareAtPrice ? `$${Number(product.compareAtPrice).toFixed(2)}` : "N/A"}</td>
                     <td>{product.status}</td>
                     <td>
                       <button type="button" className="table-action" onClick={(event) => { event.stopPropagation(); handleSelectProduct(product); }}>

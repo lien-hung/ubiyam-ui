@@ -1,3 +1,5 @@
+import type { Product } from "./product";
+
 export type BundleGiftRequest = {
   bundleId: number;
   productId: number;
@@ -14,6 +16,7 @@ export type BundleGift = {
   quantity: number;
   showPrice: boolean;
   productId: number;
+  product: Product;
 };
 
 export type BundleRequest = {
