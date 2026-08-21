@@ -485,7 +485,7 @@
         color: #53af01;
     }
 
-    .comparison-brand:last::after {
+    .comparison-brand:last-child::after {
         content: "";
         display: block;
         width: 100%;
