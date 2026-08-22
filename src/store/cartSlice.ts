@@ -30,13 +30,13 @@ const cartSlice = createSlice({
   name: "cart",
   initialState,
   reducers: {
-    addToCart(state, action: PayloadAction<{ product: Product, bundle: Bundle }>) {
+    addToCart(state, action: PayloadAction<{ product: Product, bundle?: Bundle }>) {
       const { product, bundle } = action.payload;
       const productCartItem: CartItem = {
         ...product,
         key: Date.now(),
         productId: product.id,
-        quantity: bundle.buyQuantity,
+        quantity: bundle ? bundle.buyQuantity : 1,
       };
       state.items.push(productCartItem);
       saveState(state);

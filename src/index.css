@@ -90,6 +90,14 @@ section.Toastify {
   color: var(--primary);
 }
 
+.line-through {
+  text-decoration: line-through;
+}
+
+.small {
+  font-size: 0.8rem;
+}
+
 .text-page {
   max-width: 720px;
   margin: auto;

@@ -9,8 +9,8 @@ import {
   AdminBundlesPage,
   AdminProductsPage,
   CartPage,
-  HomePage,
   Layout,
+  ProductListPage,
   ProductPage,
 } from './pages'
 import store from './store/store'
@@ -19,9 +19,16 @@ const router = createBrowserRouter([
   {
     Component: Layout,
     children: [
-      { index: true, Component: HomePage },
+      // { index: true, Component: HomePage },
+      { index: true, Component: ProductListPage },
       { path: "/cart", Component: CartPage },
-      { path: "/products/:slug", Component: ProductPage },
+      {
+        path: "products",
+        children: [
+          { index: true, Component: ProductListPage },
+          { path: ":slug", Component: ProductPage },
+        ],
+      },
       { path: "/pages/about-ubiyam", Component: AboutPage },
       {
         path: "admin",
