@@ -1,14 +1,13 @@
+import { useEffect } from "react";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { Swiper, SwiperSlide } from "swiper/react";
-import matchaPowder from "../assets/flavors/matcha-powder.webp";
-import organicPowder from "../assets/flavors/organic-powder.webp";
-import strawberryPowder from "../assets/flavors/strawberry-powder.webp";
 import girlBanner from "../assets/ubiyam-girl-banner.webp";
 import { HomePageBanner } from "../components/HomePageBanner";
 import { Marquee } from "../components/Marquee";
 import { discoverItems } from "../constants";
+import { useAppDispatch, useAppSelector, useMediaQuery } from "../hooks";
 import {
   FAQSection,
   JoinLoversSection,
@@ -17,9 +16,16 @@ import {
   SlowReleaseSection,
   TrackedSealedSection
 } from "../shared";
+import { getAllProducts } from "../store/productSlice";
 import "../styles/HomePage.css";
 
 export function HomePage() {
+  const dispatch = useAppDispatch();
+  const products = useAppSelector((state) => state.product.products);
+  const isMobile = useMediaQuery("(max-width: 768px)");
+
+  useEffect(() => { dispatch(getAllProducts()); }, [dispatch]);
+
   return (
     <main>
       <HomePageBanner />
@@ -45,32 +51,20 @@ export function HomePage() {
             Crafted for taste, color, and clean everyday energy.
           </span>
         </div>
-        <Swiper className="slideshow" slidesPerView={3} spaceBetween={30}>
-          <SwiperSlide className="slide">
-            <img src={organicPowder} />
-            <div className="text">
-              <h3>Organic UBE Powder</h3>
-              <div className="rating">
-                <span className="stars">{[1, 2, 3, 4, 5].map(() => <i className="bi bi-star-fill" />)}</span>
-                <span className="rating-text">4.9/5</span>
+        <Swiper className="slideshow" slidesPerView={isMobile ? 1 : 3} spaceBetween={30}>
+          {products.map((product) => (
+            <SwiperSlide className="slide">
+              <img src={product.image} alt={product.title} />
+              <div className="text">
+                <h3>{product.title}</h3>
+                <div className="rating">
+                  <span className="stars">{[1, 2, 3, 4, 5].map(() => <i className="bi bi-star-fill" />)}</span>
+                  <span className="rating-text">4.9/5</span>
+                </div>
               </div>
-            </div>
-            <a href="/products/ube-powder-purple-yam" className="button shop-cta">Shop Now</a>
-          </SwiperSlide>
-          <SwiperSlide className="slide">
-            <img src={strawberryPowder} />
-            <div className="text">
-              <h3>UBE & Strawberry Powder</h3>
-            </div>
-            <a className="button shop-cta disabled">Coming Soon...</a>
-          </SwiperSlide>
-          <SwiperSlide className="slide">
-            <img src={matchaPowder} />
-            <div className="text">
-              <h3>UBE & Matcha Powder</h3>
-            </div>
-            <a className="button shop-cta disabled">Coming Soon...</a>
-          </SwiperSlide>
+              <a href={`/products/${product.handle}`} className="button shop-cta">Shop Now</a>
+            </SwiperSlide>
+          ))}
         </Swiper>
       </section>
 

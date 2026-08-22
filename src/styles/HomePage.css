@@ -130,6 +130,11 @@
     }
 }
 
+.flavors-section .slide img {
+    height: 300px;
+    object-fit: cover;
+}
+
 @media (width < 768px) {
     section {
         padding: 2rem;

@@ -1,13 +1,3 @@
-import benefits from "../assets/product-gallery/benefits.webp";
-import cleanIcons from "../assets/product-gallery/clean-icons.webp";
-import first from "../assets/product-gallery/first.webp";
-import keychainGift from "../assets/product-gallery/keychain-gift.webp";
-import newPackaging from "../assets/product-gallery/new-packaging.webp";
-import oneIngredient from "../assets/product-gallery/one-ingredient.webp";
-import review from "../assets/product-gallery/review.webp";
-import steps from "../assets/product-gallery/steps.webp";
-import tableNutrition from "../assets/product-gallery/table-nutrition.webp";
-
 import bananaBreadThumb from "../assets/ubi-reels/thumbnails/banana-bread.webp";
 import bananaBreadVideo from "../assets/ubi-reels/videos/banana-bread.mp4";
 import cinnamonRollsThumb from "../assets/ubi-reels/thumbnails/cinnamon-rolls.webp";
@@ -38,18 +28,6 @@ import ubiBreadVideo from "../assets/ubi-reels/videos/ubi-bread.mp4";
 import firstStepVideo from "../assets/prep-videos/first-step.mp4";
 import secondStepVideo from "../assets/prep-videos/second-step.mp4";
 import thirdStepVideo from "../assets/prep-videos/third-step.mp4";
-
-export const galleryItems = [
-  { src: first, alt: "UBIYAM product shot" },
-  { src: benefits, alt: "Benefits icons and product" },
-  { src: cleanIcons, alt: "Clean ingredients icons" },
-  { src: keychainGift, alt: "Free keychain gift" },
-  { src: newPackaging, alt: "New packaging" },
-  { src: oneIngredient, alt: "One ingredient message" },
-  { src: review, alt: "Verified customer review" },
-  { src: steps, alt: "4 step latte recipe" },
-  { src: tableNutrition, alt: "Nutrition facts table" },
-];
 
 export const productAccordionItems = [
   {

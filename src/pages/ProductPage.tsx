@@ -13,7 +13,6 @@ import { Accordion } from "../components/Accordion";
 import { Gallery } from "../components/Gallery";
 import {
   comparisonFeatures,
-  galleryItems,
   lattePrepItems,
   productAccordionItems,
   ritualVideoItems,
@@ -59,7 +58,7 @@ export function ProductPage() {
   return (
     <main className="product-page">
       <section className="product-section">
-        <Gallery items={galleryItems} />
+        <Gallery items={[{ src: product.image }]} />
         <div className="product-info">
           {product.tags && (
             <div className="product-tags">
@@ -104,7 +103,7 @@ export function ProductPage() {
                     onChange={() => setSelectedBundle(bundle)}
                   />
                   <div className="bundle-info">
-                    <img src={`${bundle.imageUrl}?height=50`} width={50} />
+                    <img src={`${bundle.imageUrl || product.image}?height=50`} width={50} />
                     {bundle.badgeText && <div className="bundle-pill">{bundle.badgeText}</div>}
                     <div className="bundle-copy">
                       <strong>{bundle.title}</strong>
