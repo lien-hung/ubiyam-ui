@@ -29,10 +29,8 @@ export function CartPage() {
         {items.filter(i => !i.isGift).map((item) => {
           return (
             <div key={item.key} className="cart-item">
-              <div className="cart-item-left">
-                <img src={item.image} alt={item.title} />
-                <div className="cart-item-title">{item.title}</div>
-              </div>
+              <img src={item.image} alt={item.title} />
+              <div className="cart-item-title">{item.title}</div>
               <div className="cart-item-right">
                 <div className="quantity-controls">
                   <button
@@ -53,8 +51,8 @@ export function CartPage() {
                     +
                   </button>
                 </div>
-                <div className="line-total">${(item.price * item.quantity).toFixed(2)}</div>
                 <button className="remove" onClick={() => dispatch(removeFromCart(item.key))}><i className="bi bi-trash" /></button>
+                <div className="line-total">${(item.price * item.quantity).toFixed(2)}</div>
               </div>
             </div>
           );
