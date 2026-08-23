@@ -68,3 +68,10 @@
     gap: 0.5rem;
     align-items: baseline;
 }
+
+@media (width <= 768px) {
+    .product-cards {
+        display: flex;
+        flex-direction: column;
+    }
+}
