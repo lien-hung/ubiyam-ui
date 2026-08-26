@@ -28,7 +28,7 @@ export function ProductListPage() {
         </div>
         <div className="product-cards">
           {products.map((product) => (
-            <div className="product-card">
+            <div key={product.id} className="product-card">
               <img src={product.image} />
               <div className="product-card-info">
                 <a href={`/products/${product.handle}`}><h3>{product.title}</h3></a>

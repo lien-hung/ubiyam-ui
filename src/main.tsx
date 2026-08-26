@@ -9,6 +9,7 @@ import {
   AdminBundlesPage,
   AdminProductsPage,
   CartPage,
+  CheckoutSuccessPage,
   Layout,
   ProductListPage,
   ProductPage,
@@ -22,6 +23,7 @@ const router = createBrowserRouter([
       // { index: true, Component: HomePage },
       { index: true, Component: ProductListPage },
       { path: "/cart", Component: CartPage },
+      { path: "/checkout-success", Component: CheckoutSuccessPage },
       {
         path: "products",
         children: [

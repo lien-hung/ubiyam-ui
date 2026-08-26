@@ -5,14 +5,24 @@ import "../styles/CartPage.css";
 export function CartPage() {
   const dispatch = useAppDispatch();
   const items = useAppSelector((s) => s.cart.items) ?? [];
-
   const subtotal = items.reduce((sum, it) => sum + it.price * it.quantity, 0);
+
+  const handleCheckout = async () => {
+    const response = await fetch("https://ubiyam-api.onrender.com/api/v1/checkout", {
+      method: "POST",
+      body: JSON.stringify(items),
+      headers: { "Content-Type": "application/json" },
+    });
+    
+    const resObj = await response.json();
+    window.location.replace(resObj.sessionUrl);
+  };
 
   if (!items || items.length === 0) {
     return (
       <main className="cart-page-empty">
         <h2>Your cart is empty</h2>
-        <a href="/products/ube-powder-purple-yam" className="button shopping-button">Continue shopping</a>
+        <a href="/products" className="button shopping-button">Continue shopping</a>
         <h3>Have an account?</h3>
         <p><a>Log in</a> to check out faster.</p>
       </main>
@@ -63,7 +73,7 @@ export function CartPage() {
         <aside className="cart-footer">
           <div className="cart-summary">
             <div className="summary-row"><span>Subtotal</span><strong>${subtotal.toFixed(2)} USD</strong></div>
-            <button className="button checkout">Check out</button>
+            <button onClick={handleCheckout} className="button checkout">Check out</button>
           </div>
         </aside>
       )}

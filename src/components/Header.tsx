@@ -19,6 +19,17 @@ export function Header() {
 
   const itemCount = cartItems.reduce((sum, item) => sum + item.quantity, 0);
 
+  const handleCheckout = async () => {
+    const response = await fetch("https://ubiyam-api.onrender.com/api/v1/checkout", {
+      method: "POST",
+      body: JSON.stringify(cartItems),
+      headers: { "Content-Type": "application/json" },
+    });
+    
+    const resObj = await response.json();
+    window.location.replace(resObj.sessionUrl);
+  };
+
   useEffect(() => {
     document.body.classList.toggle("no-scroll", isCartDrawerOpen);
     return () => {
@@ -216,7 +227,7 @@ export function Header() {
               </div>
             </div>
 
-            <button type="button" className="button checkout-button">
+            <button onClick={handleCheckout} type="button" className="button checkout-button">
               Check out <i className="bi bi-lock"></i>
             </button>
 
