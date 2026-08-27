@@ -77,7 +77,7 @@ section.Toastify {
   border: 1px solid var(--primary);
 }
 
-.button.disabled {
+.button:disabled {
   opacity: 0.7;
   cursor: not-allowed;
 }

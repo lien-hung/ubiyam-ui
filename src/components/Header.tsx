@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 import siteLogo from "../assets/beyond-the-roots-logo.jfif";
 import { useAppDispatch, useAppSelector, useScrollDirection } from "../hooks";
-import { removeFromCart, updateQuantity } from "../store/cartSlice";
+import { clearCart, removeFromCart, updateQuantity } from "../store/cartSlice";
 import "../styles/Header.css";
 
 export function Header() {
@@ -12,6 +13,7 @@ export function Header() {
 
   const dispatch = useAppDispatch();
   const cartItems = useAppSelector((state) => state.cart.items);
+  const [isPendingCheckout, setIsPendingCheckout] = useState(false);
 
   const subtotal = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
   const compareAtTotal = cartItems.reduce((sum, item) => sum + (item.compareAtPrice ?? item.price) * item.quantity, 0);
@@ -20,14 +22,23 @@ export function Header() {
   const itemCount = cartItems.reduce((sum, item) => sum + item.quantity, 0);
 
   const handleCheckout = async () => {
-    const response = await fetch("https://ubiyam-api.onrender.com/api/v1/checkout", {
-      method: "POST",
-      body: JSON.stringify(cartItems),
-      headers: { "Content-Type": "application/json" },
-    });
+    setIsPendingCheckout(true);
     
-    const resObj = await response.json();
-    window.location.replace(resObj.sessionUrl);
+    try {
+      const response = await fetch("https://ubiyam-api.onrender.com/api/v1/checkout", {
+        method: "POST",
+        body: JSON.stringify(cartItems),
+        headers: { "Content-Type": "application/json" },
+      });
+      
+      const resObj = await response.json();
+      window.location.replace(resObj.sessionUrl);
+      dispatch(clearCart());
+    } catch (error) {
+      toast(`An error occurred: ${error}`);
+    } finally {
+      setIsPendingCheckout(false);
+    }
   };
 
   useEffect(() => {
@@ -50,6 +61,7 @@ export function Header() {
           <i className="bi bi-person"></i>
           <a href="/cart" onClick={(e) => { e.preventDefault(); setIsCartDrawerOpen(true); }}>
             <i className="bi bi-cart"></i>
+            {itemCount > 0 && <span className="cart-badge">{itemCount}</span>}
           </a>
         </span>
       </header>
@@ -227,7 +239,7 @@ export function Header() {
               </div>
             </div>
 
-            <button onClick={handleCheckout} type="button" className="button checkout-button">
+            <button onClick={handleCheckout} disabled={isPendingCheckout} type="button" className="button checkout-button">
               Check out <i className="bi bi-lock"></i>
             </button>
 

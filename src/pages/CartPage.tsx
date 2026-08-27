@@ -1,21 +1,33 @@
+import { useState } from "react";
+import { toast } from "react-toastify";
 import { useAppDispatch, useAppSelector } from "../hooks";
-import { updateQuantity, removeFromCart } from "../store/cartSlice";
+import { clearCart, removeFromCart, updateQuantity } from "../store/cartSlice";
 import "../styles/CartPage.css";
 
 export function CartPage() {
   const dispatch = useAppDispatch();
+  const [isPendingCheckout, setIsPendingCheckout] = useState(false);
   const items = useAppSelector((s) => s.cart.items) ?? [];
   const subtotal = items.reduce((sum, it) => sum + it.price * it.quantity, 0);
 
   const handleCheckout = async () => {
-    const response = await fetch("https://ubiyam-api.onrender.com/api/v1/checkout", {
-      method: "POST",
-      body: JSON.stringify(items),
-      headers: { "Content-Type": "application/json" },
-    });
-    
-    const resObj = await response.json();
-    window.location.replace(resObj.sessionUrl);
+    setIsPendingCheckout(true);
+
+    try {
+      const response = await fetch("https://ubiyam-api.onrender.com/api/v1/checkout", {
+        method: "POST",
+        body: JSON.stringify(items),
+        headers: { "Content-Type": "application/json" },
+      });
+      
+      const resObj = await response.json();
+      window.location.replace(resObj.sessionUrl);
+      dispatch(clearCart());
+    } catch (error) {
+      toast(`An error occurred: ${error}`);
+    } finally {
+      setIsPendingCheckout(false);
+    }
   };
 
   if (!items || items.length === 0) {
@@ -73,7 +85,7 @@ export function CartPage() {
         <aside className="cart-footer">
           <div className="cart-summary">
             <div className="summary-row"><span>Subtotal</span><strong>${subtotal.toFixed(2)} USD</strong></div>
-            <button onClick={handleCheckout} className="button checkout">Check out</button>
+            <button onClick={handleCheckout} disabled={isPendingCheckout} className="button checkout">Check out</button>
           </div>
         </aside>
       )}

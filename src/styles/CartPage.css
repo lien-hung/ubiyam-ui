@@ -103,7 +103,7 @@
     justify-content: space-between;
     align-items: center;
     margin-bottom: 1rem;
-    color: #4b2b57;
+    color: var(--text);
 }
 
 .button.checkout {
@@ -144,7 +144,6 @@
 
     .cart-summary {
         position: static;
-        width: 100%;
     }
 
     .cart-item {

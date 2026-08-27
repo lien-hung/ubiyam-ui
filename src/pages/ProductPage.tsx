@@ -136,7 +136,7 @@ export function ProductPage() {
 
           <button
             disabled={!selectedBundle}
-            className={`button add-to-cart ${!selectedBundle && "disabled"}`}
+            className="button add-to-cart"
             onClick={handleAddToCart}
           >
             {totalPrice !== 0 && `$${totalPrice.toFixed(2)} • `}ADD TO CART

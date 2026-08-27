@@ -36,7 +36,19 @@
 
     .header-account {
         display: flex;
+        position: relative;
         gap: 1rem;
+    }
+
+    .cart-badge {
+        background-color: var(--primary);
+        color: var(--text-light);
+        font-size: 10px;
+        padding: 2px 5px;
+        border-radius: 100%;
+        position: absolute;
+        top: 16px;
+        transform: translateX(-50%);
     }
 }
 
@@ -364,12 +376,7 @@
     }
 
     .summary-row {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 1rem;
         font-weight: 600;
-        color: var(--text);
         margin-bottom: 0.5rem;
 
         strong {
