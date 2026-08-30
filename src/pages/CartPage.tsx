@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { toast } from "react-toastify";
 import { useAppDispatch, useAppSelector } from "../hooks";
+import API from "../store/api";
 import { clearCart, removeFromCart, updateQuantity } from "../store/cartSlice";
 import "../styles/CartPage.css";
 
@@ -12,16 +13,17 @@ export function CartPage() {
 
   const handleCheckout = async () => {
     setIsPendingCheckout(true);
+    const checkoutItems = items.map(
+      (item) => item.variantLabel ? { ...item, title: `${item.title} (${item.variantLabel})` } : item
+    );
 
     try {
-      const response = await fetch("https://ubiyam-api.onrender.com/api/v1/checkout", {
-        method: "POST",
-        body: JSON.stringify(items),
-        headers: { "Content-Type": "application/json" },
-      });
-      
-      const resObj = await response.json();
-      window.location.replace(resObj.sessionUrl);
+      const response = await API.post<{ sessionUrl: string }>(
+        "checkout",
+        { body: JSON.stringify(checkoutItems), headers: { "Content-Type": "application/json" } }
+      );
+
+      if (response) window.location.replace(response.sessionUrl);
       dispatch(clearCart());
     } catch (error) {
       toast(`An error occurred: ${error}`);
@@ -52,7 +54,10 @@ export function CartPage() {
           return (
             <div key={item.key} className="cart-item">
               <img src={item.image} alt={item.title} />
-              <div className="cart-item-title">{item.title}</div>
+              <div className="cart-item-title">
+                <strong>{item.title}</strong>
+                {item.variantLabel && <span className="cart-item-variant">{item.variantLabel}</span>}
+              </div>
               <div className="cart-item-right">
                 <div className="quantity-controls">
                   <button

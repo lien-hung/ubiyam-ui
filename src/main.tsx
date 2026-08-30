@@ -6,7 +6,6 @@ import { RouterProvider } from 'react-router/dom'
 import './index.css'
 import {
   AboutPage,
-  AdminBundlesPage,
   AdminProductsPage,
   CartPage,
   CheckoutSuccessPage,
@@ -36,7 +35,6 @@ const router = createBrowserRouter([
         path: "admin",
         children: [
           { path: "products", Component: AdminProductsPage },
-          { path: "bundles", Component: AdminBundlesPage },
         ],
       },
     ]

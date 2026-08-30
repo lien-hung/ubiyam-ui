@@ -6,5 +6,7 @@ export type CartItem = {
   price: number;
   compareAtPrice?: number;
   quantity: number;
+  variantId?: number;
+  variantLabel?: string;
   isGift?: boolean;
 };

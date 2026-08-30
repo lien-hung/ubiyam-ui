@@ -1,7 +1,6 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
-import type { Bundle } from "../types/bundle";
 import type { CartItem } from "../types/cart";
-import type { Product } from "../types/product";
+import type { Product, ProductVariant } from "../types/product";
 
 type CartState = {
   items: CartItem[];
@@ -30,13 +29,19 @@ const cartSlice = createSlice({
   name: "cart",
   initialState,
   reducers: {
-    addToCart(state, action: PayloadAction<{ product: Product, bundle?: Bundle }>) {
-      const { product, bundle } = action.payload;
+    addToCart(state, action: PayloadAction<{ product: Product, variant?: ProductVariant }>) {
+      const { product, variant } = action.payload;
+      const variantPrice = variant?.price ?? product.price;
+      const variantCompareAt = variant?.compareAtPrice ?? product.compareAtPrice;
       const productCartItem: CartItem = {
         ...product,
         key: Date.now(),
         productId: product.id,
-        quantity: bundle ? bundle.buyQuantity : 1,
+        price: variantPrice,
+        compareAtPrice: variantCompareAt,
+        quantity: 1,
+        variantId: variant?.id,
+        variantLabel: variant?.label,
       };
       state.items.push(productCartItem);
       saveState(state);

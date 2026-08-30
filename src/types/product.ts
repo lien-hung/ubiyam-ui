@@ -1,4 +1,17 @@
-import type { Bundle } from "./bundle";
+export type ProductVariant = {
+  id: number;
+  label: string;
+  price: number;
+  compareAtPrice?: number;
+  productId: number;
+};
+
+export type ProductVariantRequest = {
+  label: string;
+  price: number;
+  compareAtPrice?: number;
+  productId: number;
+};
 
 export type ProductRequest = {
   title: string;
@@ -21,5 +34,5 @@ export type Product = {
   tags: string;
   image: string;
   description: string;
-  bundles: Bundle[];
+  variants: ProductVariant[];
 };

@@ -304,6 +304,10 @@
         }
     }
 
+    .cart-product-title {
+        text-align: left;
+    }
+
     .cart-product-pricing {
         grid-area: price;
         display: flex;

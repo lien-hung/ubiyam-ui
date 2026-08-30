@@ -31,7 +31,7 @@ import {
 import { addToCart } from "../store/cartSlice";
 import { getProductByHandle } from "../store/productSlice";
 import "../styles/ProductPage.css";
-import type { Bundle } from "../types/bundle";
+import type { ProductVariant } from "../types/product";
 
 export function ProductPage() {
   const { slug } = useParams();
@@ -39,21 +39,38 @@ export function ProductPage() {
   const navigate = useNavigate();
 
   const product = useAppSelector((state) => state.product.products[0]);
-  const [selectedBundle, setSelectedBundle] = useState<Bundle>();
+  const isLoading = useAppSelector((state) => state.product.isLoading);
+  const variants = product ? product.variants : [];
+  
+  const [selectedVariant, setSelectedVariant] = useState<ProductVariant>();
   const [playingIndices, setPlayingIndices] = useState<number[]>([]);
   const videoRefs = useRef<HTMLVideoElement[]>([]);
   const isMobile = useMediaQuery("(max-width: 768px)");
-  const totalPrice = (product?.price ?? 0) * (selectedBundle?.buyQuantity ?? 0);
+  
+  const selectedVariantPrice = selectedVariant?.price ?? product?.price ?? 0;
+  const totalPrice = selectedVariantPrice * 1;
 
   useEffect(() => { dispatch(getProductByHandle(slug ?? "")); }, [dispatch, slug]);
 
   const handleAddToCart = () => {
-    if (!product || !selectedBundle) return;
-    dispatch(addToCart({ product, bundle: selectedBundle }));
+    if (!product || !selectedVariant) return;
+    dispatch(addToCart({ product, variant: selectedVariant }));
     navigate("/cart");
   }
 
-  if (!product) return;
+  if (isLoading) return;
+
+  if (!product) {
+    return (
+      <main className="product-page">
+        <section className="not-found">
+          <p>404</p>
+          <h2>Page not found</h2>
+          <a className="button" href="/">Continue shopping</a>
+        </section>
+      </main>
+    )
+  }
 
   return (
     <main className="product-page">
@@ -89,53 +106,25 @@ export function ProductPage() {
             </div>
           </div>
 
-          <div className="bundle-save">
-            <div className="bundle-title">Bundle & Save</div>
-
-            <div className="bundle-list">
-              {product.bundles.toSorted((a, b) => a.buyQuantity - b.buyQuantity).map((bundle) => (
-                <label key={`bundle-${bundle.id}`} className={`bundle-item ${selectedBundle?.id === bundle.id && "selected"}`}>
-                  <input
-                    type="radio"
-                    name="current-bundle"
-                    value={bundle.id}
-                    checked={selectedBundle?.id === bundle.id}
-                    onChange={() => setSelectedBundle(bundle)}
-                  />
-                  <div className="bundle-info">
-                    <img src={`${bundle.imageUrl || product.image}?height=50`} width={50} />
-                    {bundle.badgeText && <div className="bundle-pill">{bundle.badgeText}</div>}
-                    <div className="bundle-copy">
-                      <strong>{bundle.title}</strong>
-                      <span>{bundle.subtitle}</span>
-                    </div>
-                    <div className="bundle-price">
-                      <strong>${(product.price * bundle.buyQuantity).toFixed(2)}</strong>
-                      {product.compareAtPrice && (<span>${(product.compareAtPrice * bundle.buyQuantity).toFixed(2)}</span>)}
-                    </div>
-                  </div>
-                  {bundle.freeGifts.length > 0 && (
-                    <div className="bundle-gifts">
-                      {bundle.freeGifts.map((gift) => (
-                        <div key={`bundle-gift-${gift.id}`} className="bundle-gift">
-                          <a href={`/products/${gift.product.handle}`}>
-                            <img src={`${gift.product.image}?height=30`} height={30} />
-                          </a>
-                          <span>{gift.text}</span>
-                          {gift.showPrice && (
-                            <span className="bundle-gift-price">${Number(gift.product.price).toFixed(2)}</span>
-                          )}
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </label>
+          <div className="product-variants">
+            <div className="variant-title">Choose your size</div>
+            <div className="variant-list">
+              {variants.map((variant) => (
+                <button
+                  key={`variant-${variant.id}`}
+                  type="button"
+                  className={`variant-option ${selectedVariant?.id === variant.id ? "selected" : ""}`}
+                  onClick={() => setSelectedVariant(variant)}
+                >
+                  <span>{variant.label}</span>
+                  <small>${Number(variant.price).toFixed(2)}</small>
+                </button>
               ))}
             </div>
           </div>
 
           <button
-            disabled={!selectedBundle}
+            disabled={!selectedVariant}
             className="button add-to-cart"
             onClick={handleAddToCart}
           >

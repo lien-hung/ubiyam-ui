@@ -1,11 +1,16 @@
 import { useEffect, useMemo, useState, type ChangeEvent } from "react";
-import "../styles/AdminProductsPage.css";
-import type { Product, ProductRequest } from "../types/product";
+import { toast } from "react-toastify";
 import { useAppDispatch, useAppSelector } from "../hooks";
 import { createProduct, deleteProduct, getAllProducts, updateProduct } from "../store/productSlice";
-import { toast } from "react-toastify";
+import { addVariant, deleteVariant } from "../store/productVariantSlice";
+import "../styles/AdminProductsPage.css";
+import type { Product, ProductRequest, ProductVariant, ProductVariantRequest } from "../types/product";
 
 type ProductStatus = "active" | "draft";
+
+function createEmptyVariant(productId = 0): ProductVariantRequest {
+  return { label: "", price: 0, productId };
+}
 
 function createEmptyProduct(): ProductRequest {
   return {
@@ -25,32 +30,57 @@ export function AdminProductsPage() {
   const products = useAppSelector((state) => state.product.products);
   const isLoading = useAppSelector((state) => state.product.isLoading);
 
-  const [selectedId, setSelectedId] = useState<number | null>(null);
+  const [selectedProductId, setSelectedId] = useState<number>();
   const [formState, setFormState] = useState<ProductRequest>(createEmptyProduct());
+  const [selectedVariantId, setSelectedVariantId] = useState<number>();
+  const [variantFormState, setVariantFormState] = useState<ProductVariantRequest>(createEmptyVariant());
+  const [showVariantForm, setShowVariantForm] = useState(false);
 
   useEffect(() => { dispatch(getAllProducts()); }, [dispatch]);
 
   const selectedProduct = useMemo(
-    () => products.find((product) => product.id === selectedId) || null,
-    [products, selectedId],
+    () => products.find((product) => product.id === selectedProductId),
+    [products, selectedProductId]
   );
 
-  useEffect(() => {
-    if (selectedProduct) {
-      setFormState(selectedProduct);
-    }
-  }, [selectedProduct]);
+  const variantsList = useMemo(
+    () => selectedProduct?.variants ?? [],
+    [selectedProduct?.variants]
+  );
 
-  function updateForm<Field extends keyof Product>(field: Field, value: Product[Field]) {
+  function updateForm<Field extends keyof ProductRequest>(field: Field, value: ProductRequest[Field]) {
     setFormState((current) => ({ ...current, [field]: value }));
+  }
+
+  function updateVariantForm<Field extends keyof ProductVariant>(field: Field, value: ProductVariant[Field]) {
+    setVariantFormState((current) => ({ ...current, [field]: value }));
+  }
+
+  function handleSelectVariant(variant: ProductVariant) {
+    setSelectedVariantId(variant.id);
+    setVariantFormState({ ...variant, productId: selectedProductId ?? variant.productId });
+    setShowVariantForm(true);
+  }
+
+  function handleNewVariant() {
+    setSelectedVariantId(undefined);
+    setVariantFormState(createEmptyVariant(selectedProductId));
+    setShowVariantForm(true);
   }
 
   function handleSelectProduct(product: Product) {
     setSelectedId(product.id);
+    setFormState(product);
+    setSelectedVariantId(undefined);
+    setVariantFormState(createEmptyVariant(product.id));
+    setShowVariantForm(false);
   }
 
   function handleNewProduct() {
-    setSelectedId(null);
+    setSelectedId(undefined);
+    setSelectedVariantId(undefined);
+    setVariantFormState(createEmptyVariant());
+    setShowVariantForm(false);
     setFormState(createEmptyProduct());
   }
 
@@ -70,36 +100,75 @@ export function AdminProductsPage() {
     if (!normalized.title || !normalized.handle) {
       return;
     }
-    
+
     try {
-      if (selectedId) {
-        await dispatch(updateProduct({ id: selectedId, data: normalized }));
-        toast("Product updated successfully");
+      if (selectedProductId) {
+        await dispatch(updateProduct({ id: selectedProductId, data: normalized }));
       } else {
         await dispatch(createProduct(normalized));
-        toast("Product created successfully");
       }
+      toast(`Product ${selectedProductId ? "updated" : "created"} successfully`);
     } catch (error) {
       toast(`An error occurred: ${error}`);
-      console.error(error);
     } finally {
       handleNewProduct();
     }
   }
 
   async function handleDelete() {
-    if (!selectedId) {
+    if (!selectedProductId) {
       return;
     }
     if (window.confirm("Delete this product? This action cannot be undone.")) {
       try {
-        await dispatch(deleteProduct(selectedId));
+        await dispatch(deleteProduct(selectedProductId));
         toast("Product deleted successfully");
       } catch (error) {
         toast(`An error occurred: ${error}`);
-        console.error(error);
       } finally {
         handleNewProduct();
+      }
+    }
+  }
+
+  async function handleAddVariant(event: ChangeEvent<HTMLFormElement>) {
+    event.preventDefault();
+
+    if (!selectedProductId) {
+      toast("Please select or create a product first");
+      return;
+    }
+
+    const label = variantFormState.label.trim();
+    if (!label) {
+      toast("Please fill in the variant label");
+      return;
+    }
+
+    const variantPayload = { ...variantFormState, label, productId: selectedProductId };
+
+    try {
+      await dispatch(addVariant(variantPayload));
+      toast("Variant added successfully");
+    } catch (error) {
+      toast(`An error occurred: ${error}`);
+      console.error(error);
+    } finally {
+      handleNewVariant();
+    }
+  }
+
+  async function handleDeleteVariant(variantId: number) {
+    if (window.confirm("Delete this variant? This action cannot be undone.")) {
+      try {
+        await dispatch(deleteVariant(variantId));
+        toast("Variant deleted successfully");
+      } catch (error) {
+        toast(`An error occurred: ${error}`);
+      } finally {
+        if (selectedVariantId === variantId) {
+          handleNewVariant();
+        }
       }
     }
   }
@@ -154,7 +223,7 @@ export function AdminProductsPage() {
                 {products.map((product) => (
                   <tr
                     key={product.id}
-                    className={product.id === selectedId ? "selected-row" : ""}
+                    className={product.id === selectedProductId ? "selected-row" : ""}
                     onClick={() => handleSelectProduct(product)}
                   >
                     <td>{product.title}</td>
@@ -174,11 +243,11 @@ export function AdminProductsPage() {
           </div>
         </div>
 
-        <div className="admin-panel admin-form-panel">
+        <div className="admin-panel">
           <div className="panel-header">
             <div>
-              <h2>{selectedId ? "Edit product" : "Create product"}</h2>
-              <p>{selectedId ? "Update the selected product details." : "Add a new product to the catalog."}</p>
+              <h2>{selectedProductId ? "Edit product" : "Create product"}</h2>
+              <p>{selectedProductId ? "Update the selected product details." : "Add a new product to the catalog."}</p>
             </div>
           </div>
 
@@ -217,7 +286,7 @@ export function AdminProductsPage() {
               <input
                 type="number"
                 step="0.01"
-                value={formState.compareAtPrice}
+                value={formState.compareAtPrice ?? 0}
                 onChange={(event) => updateForm("compareAtPrice", Number(event.target.value))}
                 placeholder="Higher than sale price"
               />
@@ -263,13 +332,92 @@ export function AdminProductsPage() {
               <button type="submit" className="button">
                 Save
               </button>
-              {selectedId && (
+              {selectedProductId && (
                 <button type="button" className="button secondary" onClick={handleDelete}>
                   Delete
                 </button>
               )}
             </div>
           </form>
+
+          {selectedProduct && (
+            <div className="variant-manager">
+              <div className="variant-manager-header">
+                <strong>Product variants</strong>
+                <button type="button" className="button secondary" onClick={handleNewVariant}>Add variant</button>
+              </div>
+
+              {showVariantForm && (
+                <form className="variant-form" onSubmit={handleAddVariant}>
+                  <label>
+                    Variant label
+                    <input
+                      value={variantFormState.label}
+                      onChange={(event) => updateVariantForm("label", event.target.value)}
+                      placeholder="250g"
+                    />
+                  </label>
+
+                  <label>
+                    Variant price
+                    <input
+                      type="number"
+                      step="0.01"
+                      value={variantFormState.price}
+                      onChange={(event) => updateVariantForm("price", Number(event.target.value))}
+                      placeholder="19.99"
+                    />
+                  </label>
+
+                  <label>
+                    Compare-at price
+                    <input
+                      type="number"
+                      step="0.01"
+                      value={variantFormState.compareAtPrice ?? 0}
+                      onChange={(event) => updateVariantForm("compareAtPrice", Number(event.target.value))}
+                      placeholder="Higher than sale price"
+                    />
+                  </label>
+
+                  <div className="form-actions gift-form-actions">
+                    <button type="submit" className="button">Save variant</button>
+                  </div>
+                </form>
+              )}
+
+              <div className="variant-list">
+                {variantsList.length === 0 ? (
+                  <p className="empty-state">No variants added yet. Click "Add variant" to define the available sizes or bundle options.</p>
+                ) : (
+                  variantsList.map((variant) => (
+                    <div key={`variant-${variant.id}`} className="variant-item">
+                      <div className="variant-info" onClick={() => handleSelectVariant(variant)}>
+                        <div>
+                          <p className="variant-text">{variant.label}</p>
+                          <p className="variant-meta">
+                            ${Number(variant.price).toFixed(2)}
+                            {variant.compareAtPrice ? ` • Compare: $${Number(variant.compareAtPrice).toFixed(2)}` : ""}
+                          </p>
+                        </div>
+                      </div>
+                      <button
+                        type="button"
+                        className="delete-variant-btn"
+                        onClick={(event) => {
+                          event.stopPropagation();
+                          handleDeleteVariant(variant.id);
+                        }}
+                        title="Remove variant"
+                      >
+                        ✕
+                      </button>
+                    </div>
+                  ))
+                )}
+              </div>
+            </div>
+          )}
         </div>
       </section>
     </main>

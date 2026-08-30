@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import siteLogo from "../assets/beyond-the-roots-logo.jfif";
 import { useAppDispatch, useAppSelector, useScrollDirection } from "../hooks";
+import API from "../store/api";
 import { clearCart, removeFromCart, updateQuantity } from "../store/cartSlice";
 import "../styles/Header.css";
 
@@ -23,16 +24,17 @@ export function Header() {
 
   const handleCheckout = async () => {
     setIsPendingCheckout(true);
+    const checkoutItems = cartItems.map(
+      (item) => item.variantLabel ? { ...item, title: `${item.title} (${item.variantLabel})` } : item
+    );
     
     try {
-      const response = await fetch("https://ubiyam-api.onrender.com/api/v1/checkout", {
-        method: "POST",
-        body: JSON.stringify(cartItems),
-        headers: { "Content-Type": "application/json" },
-      });
-      
-      const resObj = await response.json();
-      window.location.replace(resObj.sessionUrl);
+      const response = await API.post<{ sessionUrl: string }>(
+        "checkout",
+        { body: JSON.stringify(checkoutItems), headers: { "Content-Type": "application/json" } }
+      );
+
+      if (response) window.location.replace(response.sessionUrl);
       dispatch(clearCart());
     } catch (error) {
       toast(`An error occurred: ${error}`);
@@ -176,7 +178,10 @@ export function Header() {
                   </div>
 
                   <div className="cart-product-copy">
-                    <h3>{item.title}</h3>
+                    <div className="cart-product-title">
+                      <h3>{item.title}</h3>
+                      {item.variantLabel && <span className="cart-product-variant">{item.variantLabel}</span>}
+                    </div>
                     <button
                       type="button"
                       className="cart-remove"

@@ -29,9 +29,9 @@
 }
 
 .cart-item-title {
-    font-weight: 700;
-    color: #3a2540;
-    margin-bottom: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
 }
 
 .cart-item-right {
