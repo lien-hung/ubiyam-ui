@@ -1,4 +1,4 @@
-const baseUrl = "http://localhost:5051/api/v1/";
+const baseUrl = "https://ubiyam-api.onrender.com/api/v1/";
 
 const API = {
   async request<T>(endpoint: string, config: RequestInit = {}) {
