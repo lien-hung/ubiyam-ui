@@ -1,6 +1,5 @@
 @import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css");
-@import url('https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,500&family=Inter:wght@400;500;600&display=swap');
 
 :root {
   --text: #08060d;
@@ -11,7 +10,7 @@
   --highlight-text: #2a133833;
   --gray: #2a13380a;
   --light-gray: #ffffff33;
-  --primary: #6c3eb8;
+  --primary: #ad8140;
   --primary-2: #b57edc;
   --primary-3: #8c7ab8;
   --primary-4: #7b6b92;
@@ -30,7 +29,7 @@
 * {
   margin: 0;
   letter-spacing: 0.05rem;
-  font-family: Barlow, sans-serif;
+  font-family: Inter, sans-serif;
 }
 
 *::selection {
@@ -41,10 +40,19 @@ body.no-scroll {
   overflow: hidden;
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   margin: 0;
   font-weight: normal;
-  font-family: 'Barlow Condensed', sans-serif;
+  font-family: 'Cormorant Garamond', sans-serif;
+}
+
+body {
+  background-color: #faf6ef;
 }
 
 section {
@@ -56,6 +64,15 @@ section {
 
 section.Toastify {
   padding: 0;
+}
+
+a {
+  text-decoration: none;
+  color: var(--text);
+}
+
+a:hover {
+  text-decoration: underline;
 }
 
 .button {
@@ -112,15 +129,6 @@ section.Toastify {
   p {
     margin-bottom: 1rem;
     line-height: 1.75;
-  }
-
-  a {
-    text-decoration: none;
-    color: var(--primary);
-  }
-
-  a:hover {
-    text-decoration: underline;
   }
 
   .no-margin * {

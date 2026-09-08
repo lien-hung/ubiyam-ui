@@ -1,146 +1,93 @@
 import { useEffect } from "react";
-import "swiper/css";
-import "swiper/css/navigation";
-import "swiper/css/pagination";
-import { Swiper, SwiperSlide } from "swiper/react";
-import girlBanner from "../assets/ubiyam-girl-banner.webp";
-import { HomePageBanner } from "../components/HomePageBanner";
-import { Marquee } from "../components/Marquee";
-import { discoverItems } from "../constants";
-import { useAppDispatch, useAppSelector, useMediaQuery } from "../hooks";
-import {
-  FAQSection,
-  JoinLoversSection,
-  JoinRitualSection,
-  OrganicVeganSection,
-  SlowReleaseSection,
-  TrackedSealedSection
-} from "../shared";
+import ubeArabWoman from "../assets/ube-arab-woman.webp";
+import ubeFarm from "../assets/ube-farm.webp";
+import { useAppDispatch, useAppSelector } from "../hooks";
+import { addToCart } from "../store/cartSlice";
 import { getAllProducts } from "../store/productSlice";
 import "../styles/HomePage.css";
 
 export function HomePage() {
   const dispatch = useAppDispatch();
   const products = useAppSelector((state) => state.product.products);
-  const isMobile = useMediaQuery("(max-width: 768px)");
 
   useEffect(() => { dispatch(getAllProducts()); }, [dispatch]);
 
+  const featuredProducts = products.slice(0, 3);
+
   return (
-    <main>
-      <HomePageBanner />
-
-      <Marquee gap="8rem">
-        <span><i className="bi bi-patch-check-fill" />60-Day Satisfaction Guarantee</span>
-        <span><i className="bi bi-heart" />+12,000 UBE Lovers</span>
-        <span><i className="bi bi-globe-americas" />Sourced from the Philippines</span>
-        <span><i className="bi bi-1-circle" />One ingredient, that's it</span>
-        <span aria-hidden><i className="bi bi-patch-check-fill" />60-Day Satisfaction Guarantee</span>
-        <span aria-hidden><i className="bi bi-heart" />+12,000 UBE Lovers</span>
-        <span aria-hidden><i className="bi bi-globe-americas" />Sourced from the Philippines</span>
-        <span aria-hidden><i className="bi bi-1-circle" />One ingredient, that's it</span>
-      </Marquee>
-
-      <SlowReleaseSection />
-
-      <section className="flavors-section">
-        <div className="text">
-          <h2>Find Your Flavor. Elevate Your Ritual.</h2>
-          <span>
-            Pure Filipino Ube in its classic form, or elevated with bold, vibrant blends.
-            Crafted for taste, color, and clean everyday energy.
-          </span>
+    <main className="reference-home">
+      <section className="reference-hero">
+        <div className="reference-wrap">
+          <span className="reference-eyebrow">Rooted in quality</span>
+          <h1>Simple ingredients, grown with care.</h1>
+          <p>Beyond the Roots brings honest, single-ingredient goods to your table — starting with ube and coffee, with more roots to come.</p>
+          <a href="/products" className="reference-button">Shop our products</a>
         </div>
-        <Swiper className="slideshow" slidesPerView={isMobile ? 1 : 3} spaceBetween={30}>
-          {products.map((product) => (
-            <SwiperSlide className="slide">
-              <img src={product.image} alt={product.title} />
-              <div className="text">
-                <h3>{product.title}</h3>
-                <div className="rating">
-                  <span className="stars">{[1, 2, 3, 4, 5].map(() => <i className="bi bi-star-fill" />)}</span>
-                  <span className="rating-text">4.9/5</span>
+      </section>
+
+      <section className="reference-products" id="products">
+        <div className="reference-wrap">
+          <div className="reference-section-title">
+            <span className="reference-eyebrow">The collection</span>
+            <h2>From the root, simply made.</h2>
+          </div>
+          <div className="reference-product-grid">
+            {featuredProducts.map((product) => (
+              <article className="reference-card" key={product.id}>
+                <a className="reference-card-shot" href={`/products/${product.handle}`}>
+                  <img src={product.image} alt={product.title} />
+                </a>
+                <div className="reference-card-body">
+                  <span className="reference-origin">From the Philippines</span>
+                  <h3>{product.title}</h3>
+                  <p>{product.description}</p>
+                  <div className="reference-card-row">
+                    <span className="reference-price">${Number(product.price).toFixed(2)}</span>
+                    <button type="button" className="reference-add" onClick={() => dispatch(addToCart({ product }))} aria-label={`Add ${product.title} to cart`}>+</button>
+                  </div>
                 </div>
+              </article>
+            ))}
+            <article className="reference-card reference-next-card">
+              <div className="reference-card-shot"><span className="reference-mark">+</span></div>
+              <div className="reference-card-body">
+                <span className="reference-origin">Coming soon</span>
+                <h3>More roots to come</h3>
+                <p>We are growing the collection with the same care and simplicity.</p>
               </div>
-              <a href={`/products/${product.handle}`} className="button shop-cta">Shop Now</a>
-            </SwiperSlide>
-          ))}
-        </Swiper>
+            </article>
+          </div>
+        </div>
       </section>
 
-      <section className="discover-section">
-        <div className="text">
-          <h2>More Than Just a Powder</h2>
-          <span>
-            From creamy lattes to vibrant smoothies and baked treats,
-            UBIYAM® transforms your everyday rituals into something extraordinary.
-          </span>
-        </div>
-        <Swiper className="slideshow" slidesPerView={3} spaceBetween={30}>
-          {discoverItems.map((item) => (
-            <SwiperSlide className="slide">
-              <img src={item.img} />
-              <div className="text">
-                <h3>{item.title}</h3>
-                <p>{item.text}</p>
+      <section className="reference-story" id="story">
+        <div className="reference-wrap reference-story-inner">
+          <div className="reference-story-copy">
+            <span className="reference-eyebrow">Our roots</span>
+            <h2>One promise, wherever the root grows.</h2>
+            <p>Beyond the Roots works directly with small farms — ube growers in Vietnam and the Philippines, coffee and cashew growers in Vietnam — to bring you ingredients as close to their source as possible.</p>
+            <p>The name is a promise: we don't stop at one crop. Every new product has to earn its place next to the ones before it.</p>
+            <div className="reference-origins">
+              <div>
+                <strong>2</strong>
+                <span>Countries of origin</span>
               </div>
-            </SwiperSlide>
-          ))}
-        </Swiper>
-        <a href="/products/ube-powder-purple-yam" className="button">Discover UBIYAM®</a>
-      </section>
-
-      <section className="pure-origins-section">
-        <p className="subtitle">Pure origins. Honest craft.</p>
-        <h2>
-          From&nbsp;
-          <span className="underline">
-            Philippine
-            <svg className="squiggle" viewBox="-400 -55 730 60" stroke="currentColor" fill="none" role="presentation" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
-              <path stroke-linecap="round" stroke-width="30" pathLength="1" d="m -383.25 -6 c 55.25 -22 130.75 -33.5 293.25 -38 c 54.5 -0.5 195 -2.5 401 15"></path>
-            </svg>
-          </span>
-          &nbsp;Soil to Your Spoon
-        </h2>
-        <p>
-          Rooted in the fertile lands of the <em>Philippines</em>, UBIYAM® was born to bring authentic Ube back to its true form.
-          Our purple yams are grown by local farmers who respect the soil, the seasons, and generations of tradition.
-        </p>
-        <p>We keep it simple: <em>100% pure Ube powder. No additives. No fillers. Nothing artificial.</em></p>
-        <p>
-          <em>From farm to spoon</em>, every batch reflects our commitment to quality, sustainability, and cultural heritage,
-          a vibrant superfood made to nourish you and honor where it comes from.
-        </p>
-      </section>
-
-      <OrganicVeganSection />
-
-      <a href="/products/ube-powder-purple-yam" className="home-banner girl-banner">
-        <div className="home-banner__image"><img src={girlBanner} /></div>
-        <div className="home-banner__inner">
-          <h1>Pure taste. Steady energy. Real balance.</h1>
+              <div>
+                <strong>100%</strong>
+                <span>Natural, no additives</span>
+              </div>
+              <div>
+                <strong>0</strong>
+                <span>Preservatives added</span>
+              </div>
+            </div>
+          </div>
+          <div className="reference-story-photos">
+            <img src={ubeFarm} alt="Ube growing in the Philippines" />
+            <img src={ubeArabWoman} alt="Preparing a purple yam drink" />
+          </div>
         </div>
-      </a>
-
-      <Marquee className="girl-marquee" gap="8rem">
-        <span>100% PURE UBE</span>
-        <span>ANTIOXIDANT-RICH</span>
-        <span>GUT-LOVING FIBER</span>
-        <span>STEADY NATURAL ENERGY</span>
-        <span>NO CRASH</span>
-        <span>NO CAFFEINE SPIKES</span>
-        <span aria-hidden>100% PURE UBE</span>
-        <span aria-hidden>ANTIOXIDANT-RICH</span>
-        <span aria-hidden>GUT-LOVING FIBER</span>
-        <span aria-hidden>STEADY NATURAL ENERGY</span>
-        <span aria-hidden>NO CRASH</span>
-        <span aria-hidden>NO CAFFEINE SPIKES</span>
-      </Marquee>
-
-      <JoinLoversSection />
-      <JoinRitualSection />
-      <FAQSection />
-      <TrackedSealedSection />
+      </section>
     </main>
   );
 }

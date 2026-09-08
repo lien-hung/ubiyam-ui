@@ -8,8 +8,8 @@ export function Newsletter() {
 
   return (
     <div className="newsletter">
-      <h2>UBIYAM® CLUB</h2>
-      <p>Join us and receive surprises</p>
+      <h2>Stay close to the source.</h2>
+      <p>Get new product news and farm updates — no spam, unsubscribe anytime.</p>
       <FloatingInput
         id="newsletter-email"
         type="email"

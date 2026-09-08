@@ -1,9 +1,13 @@
 .newsletter {
-    padding: 1rem 0;
+    padding: 4rem 1.5rem;
     text-align: center;
-    background-color: var(--secondary);
+    background-color: #221a2e;
+    color: #faf6ef;
 
     h2, p {
         margin-bottom: 1rem;
     }
+
+    h2 { font-size: clamp(1.7rem, 3vw, 2.4rem); }
+    p { color: rgb(250 246 239 / .68); }
 }

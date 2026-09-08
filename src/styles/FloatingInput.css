@@ -5,7 +5,7 @@
     gap: 0.5rem;
     padding: 0.5rem;
     background: transparent;
-    border: 0.1rem solid var(--primary-3);
+    border: 0.1rem solid var(--text-light);
     border-radius: 0.5rem;
     width: 20rem;
 }
@@ -18,14 +18,14 @@
     padding: 0.8rem 0.5rem 0;
     outline: none;
     font-size: 1rem;
-    color: var(--text);
+    color: var(--text-light);
 }
 
 .floating-input label {
     position: absolute;
     left: 1rem;
     pointer-events: none;
-    color: var(--primary-4);
+    color: var(--light-gray);
     transition: transform 0.2s ease, font-size 0.2s ease, color 0.2s ease;
 }
 
@@ -33,7 +33,7 @@
 .floating-input.filled label {
     transform: translateY(-0.6rem);
     font-size: 0.75rem;
-    color: var(--primary);
+    color: var(--light-gray);
 }
 
 .floating-input button {

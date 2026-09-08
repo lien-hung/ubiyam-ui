@@ -56,9 +56,15 @@ export function Header() {
         <span className="hamburger" onClick={() => setIsMenuDrawerOpen(true)}>
           <i className="bi bi-list"></i>
         </span>
-        <a href="/">
-          <img src={siteLogo} />
+        <a className="header-brand" href="/">
+          <img src={siteLogo} alt="Beyond the Roots logo" />
+          <span>beyond the roots</span>
         </a>
+        <nav className="header-nav" aria-label="Primary navigation">
+          <a href="#products">Shop</a>
+          <a href="#story">Our story</a>
+          <a href="/pages/about-us">About</a>
+        </nav>
         <span className="header-account">
           <i className="bi bi-person"></i>
           <a href="/cart" onClick={(e) => { e.preventDefault(); setIsCartDrawerOpen(true); }}>
@@ -84,7 +90,7 @@ export function Header() {
       >
         <div className="drawer-header">
           <img src={siteLogo} height={36} />
-          <h2>UBIYAM®'s MENU</h2>
+          <h2>beyond the roots</h2>
           <button className="drawer-close" onClick={() => setIsMenuDrawerOpen(false)}>
             <i className="bi bi-x"></i>
           </button>
@@ -93,7 +99,7 @@ export function Header() {
         <div className="drawer-body">
           <ul className="drawer-list">
             <li>
-              <a href="/pages/about-ubiyam">About Us</a>
+              <a href="/pages/about-us">About Us</a>
               <div className="drawer-list-separator" />
             </li>
             <li>
@@ -101,19 +107,7 @@ export function Header() {
               <div className="drawer-list-separator" />
             </li>
             <li>
-              <a href="/products/ube-powder-purple-yam">Organic Ube Powder</a>
-              <div className="drawer-list-separator" />
-            </li>
-            <li>
-              <a href="/products/ubiyam-gift-card">Gift Cards</a>
-              <div className="drawer-list-separator" />
-            </li>
-            <li>
-              <a href="/a/parcelpanel">Track Your Order</a>
-              <div className="drawer-list-separator" />
-            </li>
-            <li>
-              <a href="/collections/the-ube-recipe-library">The Ube Recipe Library</a>
+              <a href="/products">Products</a>
               <div className="drawer-list-separator" />
             </li>
           </ul>
@@ -132,7 +126,7 @@ export function Header() {
               <div className="drawer-list-separator" />
             </li>
             <li>
-              <a href="mailto:info@ubiyam.com">info@ubiyam.com</a>
+              <a href="mailto:info@beyondtheroots.com">info@beyondtheroots.com</a>
               <div className="drawer-list-separator" />
             </li>
             <li>

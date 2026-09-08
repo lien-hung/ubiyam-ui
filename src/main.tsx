@@ -9,6 +9,7 @@ import {
   AdminProductsPage,
   CartPage,
   CheckoutSuccessPage,
+  HomePage,
   Layout,
   ProductListPage,
   ProductPage,
@@ -19,8 +20,7 @@ const router = createBrowserRouter([
   {
     Component: Layout,
     children: [
-      // { index: true, Component: HomePage },
-      { index: true, Component: ProductListPage },
+      { index: true, Component: HomePage },
       { path: "/cart", Component: CartPage },
       { path: "/checkout-success", Component: CheckoutSuccessPage },
       {
@@ -30,7 +30,7 @@ const router = createBrowserRouter([
           { path: ":slug", Component: ProductPage },
         ],
       },
-      { path: "/pages/about-ubiyam", Component: AboutPage },
+      { path: "/pages/about-us", Component: AboutPage },
       {
         path: "admin",
         children: [

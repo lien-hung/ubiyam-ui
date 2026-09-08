@@ -30,9 +30,8 @@
     .product-tags span {
         padding: 0.5rem 0.8rem;
         border-radius: 999px;
-        color: #8e44ad;
-        background: var(--secondary-gradient);
-        border: 2px solid #f4d8f6;
+        color: var(--primary);
+        border: 2px solid var(--primary);
     }
 
     .product-description {
@@ -107,8 +106,8 @@
         min-width: 120px;
         padding: 0.8rem 1rem;
         border-radius: 999px;
-        border: 1px solid #cdb3d8;
-        background: white;
+        background: transparent;
+        border: 1px solid #221a2e;
         color: var(--text);
         cursor: pointer;
         transition: all 0.2s ease;
@@ -116,7 +115,7 @@
     }
     
     .variant-option:hover {
-        border-color: #8b5db1;
+        border-color: var(--primary);
     }
     
     .variant-option.selected {
