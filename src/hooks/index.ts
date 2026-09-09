@@ -5,5 +5,4 @@ export const useAppDispatch: () => AppDispatch = useDispatch;
 export const useAppSelector: TypedUseSelectorHook<AppState> = useSelector;
 export const useAppStore: () => AppStore = useStore;
 
-export * from "./useMediaQuery";
 export * from "./useScrollDirection";
