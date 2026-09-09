@@ -61,7 +61,7 @@ export function Header() {
           <span>beyond the roots</span>
         </a>
         <nav className="header-nav" aria-label="Primary navigation">
-          <a href="#products">Shop</a>
+          <a href="/products">Shop</a>
           <a href="#story">Our story</a>
           <a href="/pages/about-us">About</a>
         </nav>

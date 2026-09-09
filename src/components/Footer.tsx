@@ -10,7 +10,7 @@ export function Footer() {
           <h3>beyond the roots</h3>
         </div>
         <div className="footer-links">
-          <a href="#products">Shop</a>
+          <a href="/products">Shop</a>
           <a href="#story">Our Roots</a>
           <a href="/pages/about-us">Contact</a>
         </div>
