@@ -10,7 +10,7 @@ import { useNavigate } from "react-router";
 export function ProductListPage() {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const products = useAppSelector((state) => state.product.products);
+  const { products, isLoading } = useAppSelector((state) => state.product);
   
   useEffect(() => { dispatch(getAllProducts()); }, [dispatch]);
 
@@ -27,19 +27,34 @@ export function ProductListPage() {
           <img src={ubeFarm} />
         </div>
         <div className="product-cards">
-          {products.map((product) => (
-            <div key={product.id} className="product-card">
-              <img src={product.image} />
-              <div className="product-card-info">
-                <a href={`/products/${product.handle}`}><h3>{product.title}</h3></a>
-                <div className="product-card-prices">
-                  <span className="bold purple">${product.price}</span>
-                  {product.compareAtPrice && (<span className="line-through small">${product.compareAtPrice}</span>)}
+          {isLoading ? (
+            Array(6).fill(null).map((_, index) => (
+              <div key={`skeleton-${index}`} className="product-card skeleton-card">
+                <div className="skeleton-image"></div>
+                <div className="product-card-info">
+                  <div className="skeleton-text skeleton-title"></div>
+                  <div className="product-card-prices">
+                    <div className="skeleton-text skeleton-price"></div>
+                  </div>
+                  <div className="skeleton-button"></div>
                 </div>
-                <button className="button" onClick={() => handleAddToCart(product)}>Add to cart</button>
               </div>
-            </div>
-          ))}
+            ))
+          ) : (
+            products.map((product) => (
+              <div key={product.id} className="product-card">
+                <img src={product.image} />
+                <div className="product-card-info">
+                  <a href={`/products/${product.handle}`}><h3>{product.title}</h3></a>
+                  <div className="product-card-prices">
+                    <span className="bold purple">${product.price}</span>
+                    {product.compareAtPrice && (<span className="line-through small">${product.compareAtPrice}</span>)}
+                  </div>
+                  <button className="button" onClick={() => handleAddToCart(product)}>Add to cart</button>
+                </div>
+              </div>
+            ))
+          )}
         </div>
       </section>
     </main>

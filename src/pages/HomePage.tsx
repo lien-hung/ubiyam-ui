@@ -8,7 +8,7 @@ import "../styles/HomePage.css";
 
 export function HomePage() {
   const dispatch = useAppDispatch();
-  const products = useAppSelector((state) => state.product.products);
+  const { products, isLoading } = useAppSelector((state) => state.product);
 
   useEffect(() => { dispatch(getAllProducts()); }, [dispatch]);
 
@@ -32,30 +32,49 @@ export function HomePage() {
             <h2>From the root, simply made.</h2>
           </div>
           <div className="reference-product-grid">
-            {featuredProducts.map((product) => (
-              <article className="reference-card" key={product.id}>
-                <a className="reference-card-shot" href={`/products/${product.handle}`}>
-                  <img src={product.image} alt={product.title} />
-                </a>
-                <div className="reference-card-body">
-                  <span className="reference-origin">From the Philippines</span>
-                  <h3>{product.title}</h3>
-                  <p>{product.description}</p>
-                  <div className="reference-card-row">
-                    <span className="reference-price">${Number(product.price).toFixed(2)}</span>
-                    <button type="button" className="reference-add" onClick={() => dispatch(addToCart({ product }))} aria-label={`Add ${product.title} to cart`}>+</button>
+            {isLoading ? (
+              Array(3).fill(null).map((_, index) => (
+                <article className="reference-card skeleton-card" key={`skeleton-${index}`}>
+                  <div className="reference-card-shot skeleton-image"></div>
+                  <div className="reference-card-body">
+                    <div className="skeleton-text skeleton-eyebrow"></div>
+                    <div className="skeleton-text skeleton-title"></div>
+                    <div className="skeleton-text skeleton-description"></div>
+                    <div className="reference-card-row">
+                      <div className="skeleton-text skeleton-price"></div>
+                      <div className="skeleton-button"></div>
+                    </div>
                   </div>
-                </div>
-              </article>
-            ))}
-            <article className="reference-card reference-next-card">
-              <div className="reference-card-shot"><span className="reference-mark">+</span></div>
-              <div className="reference-card-body">
-                <span className="reference-origin">Coming soon</span>
-                <h3>More roots to come</h3>
-                <p>We are growing the collection with the same care and simplicity.</p>
-              </div>
-            </article>
+                </article>
+              ))
+            ) : (
+              <>
+                {featuredProducts.map((product) => (
+                  <article className="reference-card" key={product.id}>
+                    <a className="reference-card-shot" href={`/products/${product.handle}`}>
+                      <img src={product.image} alt={product.title} />
+                    </a>
+                    <div className="reference-card-body">
+                      <span className="reference-origin">From the Philippines</span>
+                      <h3>{product.title}</h3>
+                      <p>{product.description}</p>
+                      <div className="reference-card-row">
+                        <span className="reference-price">${Number(product.price).toFixed(2)}</span>
+                        <button type="button" className="reference-add" onClick={() => dispatch(addToCart({ product }))} aria-label={`Add ${product.title} to cart`}>+</button>
+                      </div>
+                    </div>
+                  </article>
+                ))}
+                <article className="reference-card reference-next-card">
+                  <div className="reference-card-shot"><span className="reference-mark">+</span></div>
+                  <div className="reference-card-body">
+                    <span className="reference-origin">Coming soon</span>
+                    <h3>More roots to come</h3>
+                    <p>We are growing the collection with the same care and simplicity.</p>
+                  </div>
+                </article>
+              </>
+            )}
           </div>
         </div>
       </section>

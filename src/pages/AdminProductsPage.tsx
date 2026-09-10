@@ -27,8 +27,7 @@ function createEmptyProduct(): ProductRequest {
 
 export function AdminProductsPage() {
   const dispatch = useAppDispatch();
-  const products = useAppSelector((state) => state.product.products);
-  const isLoading = useAppSelector((state) => state.product.isLoading);
+  const { products, isLoading } = useAppSelector((state) => state.product);
 
   const [selectedProductId, setSelectedId] = useState<number>();
   const [formState, setFormState] = useState<ProductRequest>(createEmptyProduct());
